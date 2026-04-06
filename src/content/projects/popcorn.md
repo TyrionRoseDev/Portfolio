@@ -4,10 +4,7 @@ description: "A retro-themed film diary app for logging, tracking, and discoveri
 longDescription: "Popcorn is a film tracking app styled as a retro drive-in movie experience. It features a film diary, watchlist, smart recommendations, year-end stats, and social reviews. Built with a nostalgic drive-in theater aesthetic complete with vintage ticket stubs and marquee-style headers."
 label: "Web Application"
 year: 2026
-role: "Frontend Development"
-timeline: "Ongoing"
-status: "In Progress"
-tech: ["JavaScript", "TanStack Router", "Vite", "CSS"]
+tech: ["TypeScript", "React", "TanStack Start", "tRPC", "PostgreSQL", "Drizzle ORM", "Tailwind CSS", "shadcn/ui", "Docker"]
 featured: true
 liveUrl: "https://popcorn.tyrion.uk"
 githubUrl: ""

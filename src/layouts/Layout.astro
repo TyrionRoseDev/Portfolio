@@ -39,6 +39,25 @@ const {
     <Nav />
     <slot />
 
+    <!-- Smooth scroll only for same-page anchor clicks -->
+    <script>
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('a[href*="#"]');
+        if (!link) return;
+
+        const url = new URL(link.href, location.href);
+        // Only smooth-scroll if staying on the same page
+        if (url.pathname === location.pathname || url.pathname === '/' && location.pathname === '/') {
+          const target = document.querySelector(url.hash);
+          if (target) {
+            e.preventDefault();
+            history.pushState(null, '', url.hash);
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    </script>
+
     <!-- Scroll reveal observer -->
     <script>
       const observer = new IntersectionObserver(

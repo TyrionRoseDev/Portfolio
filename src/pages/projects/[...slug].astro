@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
-const { title, description, longDescription, label, year, role, timeline, status, tech, liveUrl, githubUrl } = project.data;
+const { title, description, longDescription, label, year, tech, liveUrl, githubUrl } = project.data;
 ---
 
 <Layout title={`${title} — Tyrion`} description={description}>
@@ -29,20 +29,6 @@ const { title, description, longDescription, label, year, role, timeline, status
       <div class="pd-label">{label} — {year}</div>
       <h1 class="pd-title">{title}</h1>
       <p class="pd-subtitle">{longDescription}</p>
-      <div class="pd-meta">
-        <div class="pd-meta-item">
-          <label>Role</label>
-          <span>{role}</span>
-        </div>
-        <div class="pd-meta-item">
-          <label>Timeline</label>
-          <span>{timeline}</span>
-        </div>
-        <div class="pd-meta-item">
-          <label>Status</label>
-          <span class="pd-status">{status}</span>
-        </div>
-      </div>
     </div>
 
     <div class="pd-cover">
@@ -110,14 +96,6 @@ const { title, description, longDescription, label, year, role, timeline, status
     font-size: 18px; color: var(--fg-light); line-height: 1.7;
     max-width: 560px; font-weight: 350; margin-bottom: 32px;
   }
-  .pd-meta { display: flex; gap: 40px; }
-  .pd-meta-item label {
-    display: block; font-size: 9px; text-transform: uppercase;
-    letter-spacing: 3px; color: var(--fg-muted); font-weight: 600; margin-bottom: 6px;
-  }
-  .pd-meta-item span { font-size: 14px; color: var(--fg-body); font-weight: 500; }
-  .pd-status { color: var(--accent) !important; }
-
   .pd-cover {
     margin: 0 56px 80px; height: 480px;
     background: linear-gradient(160deg, var(--accent-pale), color-mix(in srgb, var(--accent-pale) 60%, var(--bg)));
