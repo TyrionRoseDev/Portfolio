@@ -18,18 +18,16 @@ const { title, description, label, year, tech, slug, githubUrl } = Astro.props;
     <div class="proj-overlay"><span>View project</span></div>
   </div>
   <div class="proj-body">
-    <div class="proj-main">
+    <div class="proj-top">
       <div class="proj-label">{label} — {year}</div>
-      <h3 class="proj-name">{title}</h3>
-      <p class="proj-desc">{description}</p>
-    </div>
-    <div class="proj-meta">
-      <div class="proj-tags">
-        {tech.map((t) => <span class="tag">{t}</span>)}
-      </div>
       <span class="proj-link-text">
-        Case study <span class="arr"></span>
+        See more <span class="arr"></span>
       </span>
+    </div>
+    <h3 class="proj-name">{title}</h3>
+    <p class="proj-desc">{description}</p>
+    <div class="proj-tags">
+      {tech.map((t) => <span class="tag">{t}</span>)}
     </div>
   </div>
 </a>
@@ -99,17 +97,18 @@ const { title, description, label, year, tech, slug, githubUrl } = Astro.props;
   .proj-overlay span::after { content: ' →'; }
   .proj-body {
     padding: 40px 48px;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 40px;
-    align-items: start;
+  }
+  .proj-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
   }
   .proj-label {
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 3px;
     color: var(--accent);
-    margin-bottom: 14px;
     font-weight: 600;
   }
   .proj-name {
@@ -124,15 +123,12 @@ const { title, description, label, year, tech, slug, githubUrl } = Astro.props;
     font-size: 15px;
     color: var(--fg-light);
     line-height: 1.7;
-    max-width: 480px;
+    margin-bottom: 20px;
   }
-  .proj-meta { text-align: right; padding-top: 4px; }
   .proj-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    justify-content: flex-end;
-    margin-bottom: 20px;
   }
   .tag {
     font-size: 10px;
@@ -185,11 +181,7 @@ const { title, description, label, year, tech, slug, githubUrl } = Astro.props;
     .proj-img-inner { inset: 24px; }
     .proj-body {
       padding: 24px;
-      grid-template-columns: 1fr;
-      gap: 20px;
     }
-    .proj-meta { text-align: left; }
-    .proj-tags { justify-content: flex-start; }
     .proj-name { font-size: 24px; }
   }
 </style>
