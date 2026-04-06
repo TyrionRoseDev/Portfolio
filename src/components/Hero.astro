@@ -1,11 +1,6 @@
 <section class="hero" id="hero">
-  <div class="hero-bg-num" aria-hidden="true">01</div>
-  <div class="hero-shape hero-shape-1" aria-hidden="true"></div>
-  <div class="hero-shape hero-shape-2" aria-hidden="true"></div>
-  <div class="hero-shape hero-shape-3" aria-hidden="true"></div>
-
   <div class="hero-top-row">
-    <span class="hero-tag">Software Engineer</span>
+    <span class="hero-tag">Frontend Developer</span>
     <span class="hero-tag-line" aria-hidden="true"></span>
   </div>
 
@@ -14,7 +9,7 @@
       <span class="text-slide">Hi, I'm <em>Tyrion</em></span>
     </span>
     <span class="hero-line hero-line-sans">
-      <span class="text-slide">I craft digital experiences</span>
+      <span class="text-slide">I build things</span>
     </span>
     <span class="hero-line hero-line-serif">
       <span class="text-slide">for the web.</span>
@@ -23,12 +18,8 @@
 
   <div class="hero-bottom">
     <p class="hero-desc">
-      <strong>Design-driven developer</strong> focused on building interfaces that feel as good as they look.
+      Frontend developer based in South Wales. I care about the details.
     </p>
-    <div class="scroll-indicator" aria-hidden="true">
-      <span class="scroll-text">Scroll</span>
-      <div class="scroll-bar"></div>
-    </div>
   </div>
 </section>
 
@@ -41,51 +32,6 @@
     padding: 0 56px 80px;
     position: relative;
     overflow: hidden;
-  }
-  .hero-bg-num {
-    position: absolute;
-    top: 50%;
-    right: -40px;
-    transform: translateY(-50%);
-    font-family: var(--font-serif);
-    font-size: 400px;
-    font-weight: 900;
-    color: transparent;
-    -webkit-text-stroke: 1px var(--accent-pale);
-    line-height: 1;
-    user-select: none;
-    opacity: 0;
-    animation: fade-in 1.5s ease forwards 0.3s;
-  }
-  .hero-shape {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0;
-  }
-  .hero-shape-1 {
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, var(--accent-pale), transparent 70%);
-    top: 15%;
-    right: 15%;
-    animation: fade-in 1.5s ease forwards 0.2s, float1 16s ease-in-out infinite 1.7s;
-  }
-  .hero-shape-2 {
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, color-mix(in srgb, var(--accent-light) 30%, transparent), transparent 70%);
-    bottom: 25%;
-    right: 35%;
-    animation: fade-in 1.5s ease forwards 0.4s, float2 12s ease-in-out infinite 1.9s;
-  }
-  .hero-shape-3 {
-    width: 120px;
-    height: 120px;
-    border: 1px solid var(--accent-pale);
-    top: 30%;
-    right: 30%;
-    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-    animation: fade-in 1.5s ease forwards 0.6s, morph 15s ease-in-out infinite 2.1s;
   }
   .hero-top-row {
     display: flex;
@@ -118,7 +64,7 @@
   }
   .hero-line {
     display: block;
-    overflow: hidden;
+    overflow: visible;
   }
   .hero-line-serif {
     font-family: var(--font-serif);
@@ -171,34 +117,11 @@
     color: var(--fg-body);
     font-weight: 600;
   }
-  .scroll-indicator {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-  .scroll-text {
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    color: var(--fg-muted);
-    writing-mode: vertical-rl;
-  }
-  .scroll-bar {
-    width: 1px;
-    height: 50px;
-    background: linear-gradient(to bottom, var(--accent), transparent);
-    animation: pulse-bar 2.5s ease-in-out infinite;
-  }
   @media (max-width: 768px) {
     .hero { padding: 0 24px 60px; }
     .hero-line-serif { font-size: 48px; letter-spacing: -2px; }
     .hero-line-sans { font-size: 28px; letter-spacing: -0.5px; }
     .hero-bg-num { font-size: 200px; right: -20px; }
-    .hero-shape-1 { width: 180px; height: 180px; }
-    .hero-shape-2 { width: 120px; height: 120px; }
-    .hero-shape-3 { width: 80px; height: 80px; }
     .hero-bottom { flex-direction: column; gap: 32px; align-items: flex-start; }
-    .scroll-indicator { display: none; }
   }
 </style>

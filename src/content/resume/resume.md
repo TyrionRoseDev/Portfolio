@@ -1,30 +1,22 @@
 ---
 experience:
-  - role: "Software Engineer"
-    company: "Your Company"
-    startDate: "2024"
-    endDate: "Present"
-    description: "Building and shipping features across the full stack. Focused on frontend architecture, design systems, and developer experience."
-  - role: "Junior Developer"
-    company: "Previous Company"
-    startDate: "2022"
-    endDate: "2024"
-    description: "Developed web applications and internal tools. Gained experience with React, Node.js, and cloud infrastructure."
-  - role: "Intern"
-    company: "First Company"
-    startDate: "2021"
-    endDate: "2022"
-    description: "Started my career building small features and fixing bugs. Learned the fundamentals of professional software development."
+  - role: "Learning Support Assistant"
+    company: "Level 2 IT Course"
+    startDate: "Sep 2025"
+    endDate: "Jun 2026"
+    description: "Supporting students on a Level 2 IT course. Helping learners understand technical concepts, troubleshoot issues, and build confidence with technology."
+  - role: "Learning Support Assistant"
+    company: "Level 1 IT & Business Course"
+    startDate: "Sep 2024"
+    endDate: "Jun 2025"
+    description: "Supported students on a Level 1 IT and Business course. Assisted learners with coursework, technical skills, and building confidence with technology."
 education:
-  - degree: "BSc Computer Science"
-    school: "Your University"
-    year: "2018 — 2022"
-  - degree: "AWS Cloud Practitioner"
-    school: "Amazon Web Services"
-    year: "2023"
+  - degree: "BSc (Honours) Computing and IT"
+    school: "University"
+    year: "2025 — Present"
 skills:
-  languages: ["TypeScript", "Python", "Go", "HTML / CSS"]
-  frontend: ["React", "Next.js", "Astro", "Tailwind"]
-  backend: ["Node.js", "PostgreSQL", "REST APIs", "GraphQL"]
-  tools: ["Docker", "Git", "CI/CD", "Figma"]
+  languages: ["HTML", "CSS", "JavaScript"]
+  frontend: ["Astro", "Tailwind CSS", "Responsive Design"]
+  backend: []
+  tools: ["Git", "VS Code"]
 ---

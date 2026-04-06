@@ -1,30 +1,30 @@
 <div class="ab-layout reveal reveal-d2">
   <div class="ab-photo-wrap">
-    <div class="ab-photo">Photo</div>
+    <img src="/photo.jpeg" alt="Tyrion" class="ab-photo" />
     <div class="ab-photo-border" aria-hidden="true"></div>
     <div class="ab-photo-accent" aria-hidden="true"></div>
   </div>
   <div class="ab-content">
     <div class="ab-quote">
-      "I'm a developer who believes great software starts with <span>great design</span>."
+      "I care about how things look and how they <span>feel to use</span>."
     </div>
     <p class="ab-text">
-      Your story here. Who you are, what you care about, what kind of problems you love solving.
-      Write it like you're talking to someone at a coffee shop — not a recruiter.
-      This is where your personality shines.
+      Frontend developer based in South Wales, currently studying a BSc (Honours) in Computing and IT. I've spent the last few years teaching myself to build for the web — and I haven't stopped since.
+      <br /><br />
+      I love everything from clean, minimal interfaces to bold, maximalist designs. If it's well-crafted, I'm into it.
     </p>
     <div class="ab-stats">
       <div class="ab-stat">
         <label>Focus</label>
-        <span>Full-stack</span>
+        <span>Frontend</span>
       </div>
       <div class="ab-stat">
         <label>Based in</label>
-        <span>Your city</span>
+        <span>South Wales</span>
       </div>
       <div class="ab-stat">
         <label>Status</label>
-        <span class="hl">Available</span>
+        <span class="hl">Open to work</span>
       </div>
     </div>
   </div>
@@ -35,9 +35,7 @@
   .ab-photo-wrap { position: relative; }
   .ab-photo {
     width: 100%; aspect-ratio: 3/4; border-radius: 24px;
-    background: linear-gradient(160deg, var(--accent-pale), color-mix(in srgb, var(--accent-pale) 60%, var(--bg)));
-    display: flex; align-items: center; justify-content: center;
-    color: var(--fg-muted); font-size: 13px;
+    object-fit: cover; object-position: center top;
     position: relative; z-index: 1; border: 1px solid var(--border);
   }
   .ab-photo-border {

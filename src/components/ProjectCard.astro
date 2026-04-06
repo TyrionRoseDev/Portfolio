@@ -14,7 +14,7 @@ const { title, description, label, year, tech, slug, githubUrl } = Astro.props;
 
 <a href={`/projects/${slug}`} class="project-card reveal reveal-d2">
   <div class="proj-img-wrap">
-    <div class="proj-img-inner">Project screenshot</div>
+    <img src="/popcorn-screenshot.png" alt={title} class="proj-img-inner" />
     <div class="proj-overlay"><span>View project</span></div>
   </div>
   <div class="proj-body">
@@ -68,15 +68,12 @@ const { title, description, label, year, tech, slug, githubUrl } = Astro.props;
   .proj-img-inner {
     position: absolute;
     inset: 48px;
-    background: var(--surface);
     border-radius: 16px;
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--fg-muted);
-    font-size: 14px;
+    object-fit: cover;
+    width: calc(100% - 96px);
+    height: calc(100% - 96px);
   }
   .project-card:hover .proj-img-inner {
     transform: scale(1.04) rotate(-0.8deg);

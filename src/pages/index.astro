@@ -4,7 +4,6 @@ import Hero from '../components/Hero.astro';
 import Marquee from '../components/Marquee.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import SkillsGrid from '../components/SkillsGrid.astro';
 import About from '../components/About.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
@@ -35,13 +34,8 @@ const projects = (await getCollection('projects'))
       ))}
     </section>
 
-    <section class="sect" id="skills">
-      <SectionHeader number="03" label="TOOLKIT" title="Skills &" accent="technologies" />
-      <SkillsGrid />
-    </section>
-
     <section class="sect" id="about">
-      <SectionHeader number="04" label="ABOUT" title="A bit" accent="about me" />
+      <SectionHeader number="03" label="ABOUT" title="A bit" accent="about me" />
       <About />
     </section>
 

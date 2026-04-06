@@ -15,9 +15,8 @@ const { experience, education, skills } = resumeData;
 const skillCategories = [
   { title: 'Languages', items: skills.languages },
   { title: 'Frontend', items: skills.frontend },
-  { title: 'Backend', items: skills.backend },
   { title: 'Tools', items: skills.tools },
-];
+].filter(cat => cat.items.length > 0);
 ---
 
 <Layout title="Resume — Tyrion" description="My professional experience and skills.">
@@ -163,7 +162,7 @@ const skillCategories = [
   .rs-edu-year { font-size: 12px; color: var(--fg-muted); }
 
   .rs-skills-grid {
-    display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     border: 1px solid var(--border); border-radius: 20px;
     overflow: hidden; background: var(--surface);
   }

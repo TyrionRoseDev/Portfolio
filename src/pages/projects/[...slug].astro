@@ -46,7 +46,7 @@ const { title, description, longDescription, label, year, role, timeline, status
     </div>
 
     <div class="pd-cover">
-      <div class="pd-cover-inner">Full project screenshot</div>
+      <img src="/popcorn-screenshot.png" alt={title} class="pd-cover-inner" />
     </div>
 
     <div class="pd-content">
@@ -131,10 +131,9 @@ const { title, description, longDescription, label, year, role, timeline, status
     background-size: 24px 24px;
   }
   .pd-cover-inner {
-    width: 80%; height: 75%; background: var(--surface);
+    width: 80%; height: 75%;
     border-radius: 16px; box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--fg-muted); font-size: 14px; z-index: 1;
+    object-fit: cover; z-index: 1;
   }
 
   .pd-content { max-width: 680px; margin: 0 auto; padding: 0 24px 120px; }
