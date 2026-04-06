@@ -1,0 +1,189 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const { title, description, longDescription, label, year, role, timeline, status, tech, liveUrl, githubUrl } = project.data;
+---
+
+<Layout title={`${title} — Tyrion`} description={description}>
+  <main class="pd">
+    <div class="pd-back">
+      <a href="/#projects">
+        <span class="pd-back-arrow"></span>
+        Back to projects
+      </a>
+    </div>
+
+    <div class="pd-hero">
+      <div class="pd-label">{label} — {year}</div>
+      <h1 class="pd-title">{title}</h1>
+      <p class="pd-subtitle">{longDescription}</p>
+      <div class="pd-meta">
+        <div class="pd-meta-item">
+          <label>Role</label>
+          <span>{role}</span>
+        </div>
+        <div class="pd-meta-item">
+          <label>Timeline</label>
+          <span>{timeline}</span>
+        </div>
+        <div class="pd-meta-item">
+          <label>Status</label>
+          <span class="pd-status">{status}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pd-cover">
+      <div class="pd-cover-inner">Full project screenshot</div>
+    </div>
+
+    <div class="pd-content">
+      <Content />
+
+      <div class="pd-section">
+        <div class="pd-section-num">03 — TECH STACK</div>
+        <h3>Built with</h3>
+        <div class="pd-tags">
+          {tech.map((t) => <span class="pd-tag">{t}</span>)}
+        </div>
+      </div>
+
+      <div class="pd-links">
+        {liveUrl && <a href={liveUrl} class="pd-link pd-link-fill" target="_blank" rel="noopener">Live Site ↗</a>}
+        {githubUrl && <a href={githubUrl} class="pd-link pd-link-ghost" target="_blank" rel="noopener">GitHub ↗</a>}
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .pd { max-width: 1100px; margin: 0 auto; }
+  .pd-back { padding: 100px 56px 40px; }
+  .pd-back a {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 3px;
+    color: var(--fg-muted); text-decoration: none; font-weight: 500;
+    display: flex; align-items: center; gap: 12px; transition: color 0.3s;
+  }
+  .pd-back a:hover { color: var(--accent); }
+  .pd-back-arrow {
+    display: inline-block; width: 20px; height: 1px;
+    background: var(--fg-muted); position: relative; transition: all 0.3s;
+  }
+  .pd-back a:hover .pd-back-arrow { background: var(--accent); width: 30px; }
+  .pd-back-arrow::before {
+    content: ''; position: absolute; left: 0; top: -3px;
+    width: 6px; height: 6px;
+    border-bottom: 1px solid var(--fg-muted); border-left: 1px solid var(--fg-muted);
+    transform: rotate(45deg); transition: border-color 0.3s;
+  }
+  .pd-back a:hover .pd-back-arrow::before { border-color: var(--accent); }
+
+  .pd-hero { padding: 0 56px 64px; }
+  .pd-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 4px;
+    color: var(--accent); margin-bottom: 20px; font-weight: 600;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .pd-label::after {
+    content: ''; width: 32px; height: 1px;
+    background: linear-gradient(90deg, var(--accent-light), transparent);
+  }
+  .pd-title {
+    font-family: var(--font-serif);
+    font-size: 72px; font-weight: 900; letter-spacing: -3px;
+    color: var(--fg); line-height: 0.95; margin-bottom: 24px;
+  }
+  .pd-subtitle {
+    font-size: 18px; color: var(--fg-light); line-height: 1.7;
+    max-width: 560px; font-weight: 350; margin-bottom: 32px;
+  }
+  .pd-meta { display: flex; gap: 40px; }
+  .pd-meta-item label {
+    display: block; font-size: 9px; text-transform: uppercase;
+    letter-spacing: 3px; color: var(--fg-muted); font-weight: 600; margin-bottom: 6px;
+  }
+  .pd-meta-item span { font-size: 14px; color: var(--fg-body); font-weight: 500; }
+  .pd-status { color: var(--accent) !important; }
+
+  .pd-cover {
+    margin: 0 56px 80px; height: 480px;
+    background: linear-gradient(160deg, var(--accent-pale), color-mix(in srgb, var(--accent-pale) 60%, var(--bg)));
+    border-radius: 24px; border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .pd-cover::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(color-mix(in srgb, var(--accent) 6%, transparent) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+  }
+  .pd-cover-inner {
+    width: 80%; height: 75%; background: var(--surface);
+    border-radius: 16px; box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--fg-muted); font-size: 14px; z-index: 1;
+  }
+
+  .pd-content { max-width: 680px; margin: 0 auto; padding: 0 24px 120px; }
+  .pd-content :global(h2) {
+    font-family: var(--font-serif);
+    font-size: 28px; font-weight: 700; color: var(--fg);
+    margin-bottom: 16px; margin-top: 56px; letter-spacing: -0.5px;
+  }
+  .pd-content :global(p) {
+    font-size: 16px; color: var(--fg-light);
+    line-height: 1.85; font-weight: 350; margin-bottom: 16px;
+  }
+
+  .pd-section { margin-top: 56px; }
+  .pd-section-num {
+    font-size: 11px; letter-spacing: 4px; color: var(--accent);
+    font-weight: 500; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .pd-section-num::after { content: ''; width: 24px; height: 1px; background: var(--accent-light); }
+  .pd-section h3 {
+    font-family: var(--font-serif);
+    font-size: 28px; font-weight: 700; color: var(--fg); margin-bottom: 16px;
+  }
+  .pd-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .pd-tag {
+    font-size: 11px; font-family: var(--font-mono);
+    padding: 6px 16px; border: 1px solid var(--border);
+    border-radius: 100px; color: var(--fg-light);
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .pd-links { display: flex; gap: 16px; margin-top: 40px; }
+  .pd-link {
+    padding: 14px 32px; border-radius: 100px;
+    font-size: 12px; font-weight: 600; text-decoration: none;
+    text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s;
+  }
+  .pd-link-fill { background: var(--accent); color: #fff; }
+  .pd-link-fill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+  .pd-link-ghost { border: 1.5px solid var(--border); color: var(--fg-light); }
+  .pd-link-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .pd-back { padding: 80px 24px 24px; }
+    .pd-hero { padding: 0 24px 40px; }
+    .pd-title { font-size: 40px; letter-spacing: -1.5px; }
+    .pd-cover { margin: 0 24px 48px; height: 280px; }
+  }
+</style>

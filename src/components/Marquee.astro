@@ -1,0 +1,54 @@
+---
+const items = [
+  'Available for work',
+  'Full-stack development',
+  'UI/UX design',
+  'Web applications',
+  'Design systems',
+  'Creative development',
+];
+const allItems = [...items, ...items];
+---
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    {allItems.map((item) => (
+      <div class="marquee-item">
+        {item}
+        <span class="marquee-dot"></span>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .marquee {
+    padding: 28px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .marquee-track {
+    display: flex;
+    animation: scroll-marquee 30s linear infinite;
+    width: max-content;
+  }
+  .marquee-item {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--fg-muted);
+    white-space: nowrap;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .marquee-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    flex-shrink: 0;
+  }
+</style>

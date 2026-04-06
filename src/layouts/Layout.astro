@@ -1,4 +1,7 @@
 ---
+import Nav from '../components/Nav.astro';
+import CustomCursor from '../components/CustomCursor.astro';
+
 interface Props {
   title?: string;
   description?: string;
@@ -33,6 +36,8 @@ const {
     </script>
   </head>
   <body>
+    <CustomCursor />
+    <Nav />
     <slot />
 
     <!-- Scroll reveal observer -->

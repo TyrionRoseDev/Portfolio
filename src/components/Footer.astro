@@ -1,0 +1,25 @@
+<footer class="foot">
+  <span>© {new Date().getFullYear()}</span>
+  <div class="foot-links">
+    <a href="/resume">Resume</a>
+    <a href="#" target="_blank" rel="noopener">GitHub</a>
+  </div>
+  <span>Built with Astro</span>
+</footer>
+
+<style>
+  .foot {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 32px 56px; border-top: 1px solid var(--border);
+    font-size: 11px; color: var(--fg-muted); letter-spacing: 1px;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .foot-links { display: flex; gap: 24px; }
+  .foot-links a {
+    color: var(--fg-muted); text-decoration: none;
+    transition: color 0.3s; font-size: 11px;
+  }
+  .foot-links a:hover { color: var(--accent); }
+
+  @media (max-width: 768px) { .foot { padding: 24px; } }
+</style>

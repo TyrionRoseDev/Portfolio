@@ -1,11 +1,63 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import SkillsGrid from '../components/SkillsGrid.astro';
+import About from '../components/About.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects'))
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout>
   <main>
-    <h1 style="padding: 200px 56px; font-family: var(--font-serif); font-size: 64px; color: var(--fg);">
-      Portfolio coming soon.
-    </h1>
+    <Hero />
+    <Marquee />
+
+    <section class="sect" id="projects">
+      <SectionHeader number="02" label="SELECTED WORK" title="Featured" accent="projects" />
+      {projects.map((project) => (
+        <ProjectCard
+          title={project.data.title}
+          description={project.data.description}
+          label={project.data.label}
+          year={project.data.year}
+          tech={project.data.tech}
+          slug={project.id}
+          githubUrl={project.data.githubUrl}
+        />
+      ))}
+    </section>
+
+    <section class="sect" id="skills">
+      <SectionHeader number="03" label="TOOLKIT" title="Skills &" accent="technologies" />
+      <SkillsGrid />
+    </section>
+
+    <section class="sect" id="about">
+      <SectionHeader number="04" label="ABOUT" title="A bit" accent="about me" />
+      <About />
+    </section>
+
+    <Contact />
   </main>
+  <Footer />
 </Layout>
+
+<style>
+  .sect {
+    padding: 160px 56px;
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  @media (max-width: 768px) {
+    .sect { padding: 80px 24px; }
+  }
+</style>

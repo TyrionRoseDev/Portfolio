@@ -1,0 +1,55 @@
+---
+interface Props {
+  number: string;
+  label: string;
+  title: string;
+  accent: string;
+}
+
+const { number, label, title, accent } = Astro.props;
+---
+
+<div class="reveal">
+  <div class="sect-num">{number} — {label}</div>
+  <h2 class="sect-h" set:html={`${title}<br><span class="sect-accent">${accent}</span>`} />
+</div>
+
+<style>
+  .sect-num {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .sect-num::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent-light), transparent);
+  }
+  .sect-h {
+    font-family: var(--font-serif);
+    font-size: 64px;
+    font-weight: 900;
+    letter-spacing: -3px;
+    color: var(--fg);
+    line-height: 1;
+    margin-bottom: 56px;
+  }
+  :global(.sect-accent) {
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .sect-h {
+      font-size: 40px;
+      letter-spacing: -1.5px;
+    }
+  }
+</style>

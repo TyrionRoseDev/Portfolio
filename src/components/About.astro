@@ -1,0 +1,88 @@
+<div class="ab-layout reveal reveal-d2">
+  <div class="ab-photo-wrap">
+    <div class="ab-photo">Photo</div>
+    <div class="ab-photo-border" aria-hidden="true"></div>
+    <div class="ab-photo-accent" aria-hidden="true"></div>
+  </div>
+  <div class="ab-content">
+    <div class="ab-quote">
+      "I'm a developer who believes great software starts with <span>great design</span>."
+    </div>
+    <p class="ab-text">
+      Your story here. Who you are, what you care about, what kind of problems you love solving.
+      Write it like you're talking to someone at a coffee shop — not a recruiter.
+      This is where your personality shines.
+    </p>
+    <div class="ab-stats">
+      <div class="ab-stat">
+        <label>Focus</label>
+        <span>Full-stack</span>
+      </div>
+      <div class="ab-stat">
+        <label>Based in</label>
+        <span>Your city</span>
+      </div>
+      <div class="ab-stat">
+        <label>Status</label>
+        <span class="hl">Available</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ab-layout { display: grid; grid-template-columns: 300px 1fr; gap: 72px; align-items: start; }
+  .ab-photo-wrap { position: relative; }
+  .ab-photo {
+    width: 100%; aspect-ratio: 3/4; border-radius: 24px;
+    background: linear-gradient(160deg, var(--accent-pale), color-mix(in srgb, var(--accent-pale) 60%, var(--bg)));
+    display: flex; align-items: center; justify-content: center;
+    color: var(--fg-muted); font-size: 13px;
+    position: relative; z-index: 1; border: 1px solid var(--border);
+  }
+  .ab-photo-border {
+    position: absolute; inset: -14px;
+    border: 1px solid var(--accent-pale); border-radius: 32px; z-index: 0;
+  }
+  .ab-photo-accent {
+    position: absolute; bottom: -20px; right: -20px;
+    width: 80px; height: 80px;
+    border: 1px solid var(--accent-pale);
+    border-radius: 20% 80% 80% 20% / 80% 20% 80% 20%;
+    z-index: 0; animation: morph 12s ease-in-out infinite;
+  }
+  .ab-quote {
+    font-family: var(--font-serif);
+    font-size: 28px; font-weight: 500; font-style: italic;
+    color: var(--fg); line-height: 1.4; margin-bottom: 28px; letter-spacing: -0.5px;
+  }
+  .ab-quote span { color: var(--accent); }
+  .ab-text {
+    font-size: 16px; color: var(--fg-light);
+    line-height: 1.85; margin-bottom: 40px; font-weight: 350;
+  }
+  .ab-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--border); border-radius: 16px;
+    overflow: hidden; background: var(--surface);
+  }
+  .ab-stat {
+    padding: 24px 28px; border-right: 1px solid var(--border); transition: background 0.3s;
+  }
+  .ab-stat:last-child { border-right: none; }
+  .ab-stat:hover { background: color-mix(in srgb, var(--accent-pale) 30%, var(--surface)); }
+  .ab-stat label {
+    display: block; font-size: 9px; text-transform: uppercase;
+    letter-spacing: 3px; color: var(--fg-muted); font-weight: 600; margin-bottom: 8px;
+  }
+  .ab-stat span { font-family: var(--font-serif); font-size: 17px; font-weight: 700; color: var(--fg); }
+  .ab-stat .hl { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .ab-layout { grid-template-columns: 1fr; gap: 40px; }
+    .ab-photo-wrap { max-width: 240px; }
+    .ab-stats { grid-template-columns: 1fr; }
+    .ab-stat { border-right: none; border-bottom: 1px solid var(--border); }
+    .ab-stat:last-child { border-bottom: none; }
+  }
+</style>

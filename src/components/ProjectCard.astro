@@ -1,0 +1,198 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  label: string;
+  year: number;
+  tech: string[];
+  slug: string;
+  githubUrl?: string;
+}
+
+const { title, description, label, year, tech, slug, githubUrl } = Astro.props;
+---
+
+<a href={`/projects/${slug}`} class="project-card reveal reveal-d2">
+  <div class="proj-img-wrap">
+    <div class="proj-img-inner">Project screenshot</div>
+    <div class="proj-overlay"><span>View project</span></div>
+  </div>
+  <div class="proj-body">
+    <div class="proj-main">
+      <div class="proj-label">{label} — {year}</div>
+      <h3 class="proj-name">{title}</h3>
+      <p class="proj-desc">{description}</p>
+    </div>
+    <div class="proj-meta">
+      <div class="proj-tags">
+        {tech.map((t) => <span class="tag">{t}</span>)}
+      </div>
+      <span class="proj-link-text">
+        Case study <span class="arr"></span>
+      </span>
+    </div>
+  </div>
+</a>
+
+<style>
+  .project-card {
+    position: relative;
+    border-radius: 28px;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 40px 100px color-mix(in srgb, var(--accent) 8%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 15%, transparent);
+  }
+  .proj-img-wrap {
+    height: 440px;
+    background: linear-gradient(160deg, var(--accent-pale), color-mix(in srgb, var(--accent-pale) 60%, var(--bg)));
+    position: relative;
+    overflow: hidden;
+  }
+  .proj-img-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(color-mix(in srgb, var(--accent) 6%, transparent) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+  }
+  .proj-img-inner {
+    position: absolute;
+    inset: 48px;
+    background: var(--surface);
+    border-radius: 16px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--fg-muted);
+    font-size: 14px;
+  }
+  .project-card:hover .proj-img-inner {
+    transform: scale(1.04) rotate(-0.8deg);
+  }
+  .proj-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(26, 17, 24, 0.7), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    display: flex;
+    align-items: flex-end;
+    padding: 32px;
+  }
+  .project-card:hover .proj-overlay { opacity: 1; }
+  .proj-overlay span {
+    font-size: 13px;
+    color: #fff;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .proj-overlay span::after { content: ' →'; }
+  .proj-body {
+    padding: 40px 48px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: start;
+  }
+  .proj-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .proj-name {
+    font-family: var(--font-serif);
+    font-size: 34px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    color: var(--fg);
+    margin-bottom: 14px;
+  }
+  .proj-desc {
+    font-size: 15px;
+    color: var(--fg-light);
+    line-height: 1.7;
+    max-width: 480px;
+  }
+  .proj-meta { text-align: right; padding-top: 4px; }
+  .proj-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+  .tag {
+    font-size: 10px;
+    font-family: var(--font-mono);
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    color: var(--fg-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.25s;
+  }
+  .tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .proj-link-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .arr {
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: var(--accent);
+    position: relative;
+    transition: width 0.3s;
+  }
+  .arr::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -3px;
+    width: 6px;
+    height: 6px;
+    border-top: 1px solid var(--accent);
+    border-right: 1px solid var(--accent);
+    transform: rotate(45deg);
+  }
+  .project-card:hover .arr { width: 36px; }
+
+  @media (max-width: 768px) {
+    .proj-img-wrap { height: 260px; }
+    .proj-img-inner { inset: 24px; }
+    .proj-body {
+      padding: 24px;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .proj-meta { text-align: left; }
+    .proj-tags { justify-content: flex-start; }
+    .proj-name { font-size: 24px; }
+  }
+</style>

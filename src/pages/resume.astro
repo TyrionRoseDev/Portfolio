@@ -1,0 +1,206 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const resumeEntries = await getCollection('resume');
+const resumeData = resumeEntries[0]?.data;
+
+if (!resumeData) {
+  throw new Error('No resume content found');
+}
+
+const { experience, education, skills } = resumeData;
+
+const skillCategories = [
+  { title: 'Languages', items: skills.languages },
+  { title: 'Frontend', items: skills.frontend },
+  { title: 'Backend', items: skills.backend },
+  { title: 'Tools', items: skills.tools },
+];
+---
+
+<Layout title="Resume — Tyrion" description="My professional experience and skills.">
+  <main class="rs">
+    <div class="rs-hero">
+      <div class="rs-hero-left">
+        <div class="rs-hero-label">Curriculum Vitae</div>
+        <h1 class="rs-title">My <em>résumé</em></h1>
+      </div>
+      <a href="#" class="rs-download">↓ Download PDF</a>
+    </div>
+
+    <div class="rs-section">
+      <div class="rs-sect-header">
+        <span class="rs-sect-num">01</span>
+        <span class="rs-sect-title">Experience</span>
+        <div class="rs-sect-line"></div>
+      </div>
+      <div class="rs-timeline">
+        {experience.map((exp) => (
+          <div class="rs-entry reveal">
+            <div class="rs-date">{exp.startDate} —<br />{exp.endDate}</div>
+            <div class="rs-entry-body">
+              <div class="rs-role">{exp.role}</div>
+              <div class="rs-company">{exp.company}</div>
+              <p class="rs-desc">{exp.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="rs-section">
+      <div class="rs-sect-header">
+        <span class="rs-sect-num">02</span>
+        <span class="rs-sect-title">Education</span>
+        <div class="rs-sect-line"></div>
+      </div>
+      <div class="rs-edu-grid reveal">
+        {education.map((edu) => (
+          <div class="rs-edu-card">
+            <div class="rs-edu-degree">{edu.degree}</div>
+            <div class="rs-edu-school">{edu.school}</div>
+            <div class="rs-edu-year">{edu.year}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="rs-section rs-section-last">
+      <div class="rs-sect-header">
+        <span class="rs-sect-num">03</span>
+        <span class="rs-sect-title">Skills</span>
+        <div class="rs-sect-line"></div>
+      </div>
+      <div class="rs-skills-grid reveal">
+        {skillCategories.map((cat) => (
+          <div class="rs-skill-col">
+            <h4>{cat.title}</h4>
+            <ul>
+              {cat.items.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .rs { max-width: 1100px; margin: 0 auto; }
+  .rs-hero {
+    padding: 120px 56px 80px; display: flex;
+    justify-content: space-between; align-items: flex-end;
+  }
+  .rs-hero-label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 5px;
+    color: var(--accent); font-weight: 500; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .rs-hero-label::after {
+    content: ''; width: 32px; height: 1px;
+    background: linear-gradient(90deg, var(--accent-light), transparent);
+  }
+  .rs-title {
+    font-family: var(--font-serif);
+    font-size: 64px; font-weight: 900; letter-spacing: -3px;
+    color: var(--fg); line-height: 0.95;
+  }
+  .rs-title em { font-style: italic; font-weight: 500; color: var(--accent); }
+  .rs-download {
+    padding: 14px 32px; background: var(--accent); color: #fff;
+    border-radius: 100px; font-size: 12px; font-weight: 600;
+    text-decoration: none; text-transform: uppercase; letter-spacing: 2px;
+    transition: all 0.3s; display: flex; align-items: center; gap: 10px;
+  }
+  .rs-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+
+  .rs-section { padding: 0 56px 80px; }
+  .rs-section-last { padding-bottom: 120px; }
+  .rs-sect-header { display: flex; align-items: center; gap: 16px; margin-bottom: 40px; }
+  .rs-sect-num { font-size: 11px; letter-spacing: 4px; color: var(--accent); font-weight: 500; }
+  .rs-sect-title { font-family: var(--font-serif); font-size: 24px; font-weight: 700; color: var(--fg); }
+  .rs-sect-line { flex: 1; height: 1px; background: var(--border); }
+
+  .rs-timeline { position: relative; padding-left: 148px; }
+  .rs-timeline::before {
+    content: ''; position: absolute; left: 100px; top: 0; bottom: 0;
+    width: 1px; background: var(--border);
+  }
+  .rs-entry { position: relative; margin-bottom: 48px; }
+  .rs-entry::after {
+    content: ''; position: absolute; left: -52px; top: 8px;
+    width: 9px; height: 9px; border-radius: 50%;
+    border: 2px solid var(--accent-light); background: var(--bg);
+    z-index: 1; transition: all 0.3s;
+  }
+  .rs-entry:hover::after { background: var(--accent); border-color: var(--accent); }
+  .rs-date {
+    position: absolute; left: -148px; width: 80px;
+    font-size: 12px; color: var(--fg-muted); font-weight: 500;
+    padding-top: 4px; text-align: right;
+  }
+  .rs-role { font-family: var(--font-serif); font-size: 20px; font-weight: 700; color: var(--fg); margin-bottom: 4px; }
+  .rs-company { font-size: 14px; color: var(--accent); font-weight: 500; margin-bottom: 12px; }
+  .rs-desc { font-size: 14px; color: var(--fg-light); line-height: 1.75; font-weight: 350; }
+
+  .rs-edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .rs-edu-card {
+    padding: 32px; border: 1px solid var(--border); border-radius: 20px;
+    background: var(--surface); transition: all 0.3s;
+  }
+  .rs-edu-card:hover {
+    border-color: color-mix(in srgb, var(--accent) 15%, transparent);
+    box-shadow: 0 12px 40px color-mix(in srgb, var(--accent) 6%, transparent);
+  }
+  .rs-edu-degree { font-family: var(--font-serif); font-size: 18px; font-weight: 700; color: var(--fg); margin-bottom: 4px; }
+  .rs-edu-school { font-size: 14px; color: var(--accent); font-weight: 500; margin-bottom: 4px; }
+  .rs-edu-year { font-size: 12px; color: var(--fg-muted); }
+
+  .rs-skills-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+    border: 1px solid var(--border); border-radius: 20px;
+    overflow: hidden; background: var(--surface);
+  }
+  .rs-skill-col {
+    padding: 32px; border-right: 1px solid var(--border); transition: background 0.3s;
+  }
+  .rs-skill-col:last-child { border-right: none; }
+  .rs-skill-col:hover { background: color-mix(in srgb, var(--accent-pale) 30%, var(--surface)); }
+  .rs-skill-col h4 {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--fg-muted); font-weight: 600; margin-bottom: 16px;
+    padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    transition: color 0.3s;
+  }
+  .rs-skill-col:hover h4 { color: var(--accent); }
+  .rs-skill-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .rs-skill-col li {
+    font-size: 13px; color: var(--fg-light);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .rs-skill-col li::before {
+    content: ''; width: 4px; height: 4px; border-radius: 50%;
+    background: var(--accent-light); flex-shrink: 0; transition: background 0.3s;
+  }
+  .rs-skill-col:hover li::before { background: var(--accent); }
+
+  @media (max-width: 768px) {
+    .rs-hero { padding: 80px 24px 48px; flex-direction: column; align-items: flex-start; gap: 24px; }
+    .rs-title { font-size: 40px; }
+    .rs-section { padding: 0 24px 48px; }
+    .rs-timeline { padding-left: 32px; }
+    .rs-timeline::before { left: 0; }
+    .rs-entry::after { left: -20px; }
+    .rs-date { position: static; text-align: left; width: auto; margin-bottom: 8px; }
+    .rs-edu-grid { grid-template-columns: 1fr; }
+    .rs-skills-grid { grid-template-columns: 1fr 1fr; }
+    .rs-skill-col:nth-child(2) { border-right: none; }
+    .rs-skill-col:nth-child(1), .rs-skill-col:nth-child(2) { border-bottom: 1px solid var(--border); }
+  }
+</style>
