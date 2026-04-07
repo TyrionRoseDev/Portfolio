@@ -1090,10 +1090,25 @@
 
       if (playerCells.length === 0) { await playOptimalMove(); return; }
 
-      // Erase the X the player JUST placed — maximum comedy
-      const victimCell = state.lastPlayerMove !== -1 && state.board[state.lastPlayerMove] === PLAYER
-        ? state.lastPlayerMove
-        : playerCells[playerCells.length - 1];
+      // Pick the X that, when replaced with O, gives AI the best position (via minimax)
+      let bestVictim = playerCells[0];
+      let bestScore = -Infinity;
+      for (const cell of playerCells) {
+        state.board[cell] = AI;
+        if (checkWinner(state.board) === AI) {
+          state.board[cell] = PLAYER;
+          bestVictim = cell;
+          bestScore = Infinity;
+          break;
+        }
+        const score = minimax(state.board, false);
+        state.board[cell] = PLAYER;
+        if (score > bestScore) {
+          bestScore = score;
+          bestVictim = cell;
+        }
+      }
+      const victimCell = bestVictim;
 
       setCommentary("Hmm, I don't remember you playing there...");
 
