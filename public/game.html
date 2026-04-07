@@ -712,8 +712,15 @@
     }
 
     const themeToggle = document.getElementById('themeToggle');
+    const isEmbedded = window !== window.parent;
 
     function getPreferredTheme() {
+      // If embedded in iframe, inherit parent theme
+      if (isEmbedded) {
+        try {
+          return parent.document.documentElement.getAttribute('data-theme') || 'dark';
+        } catch (e) { /* cross-origin fallback */ }
+      }
       const stored = localStorage.getItem('theme');
       if (stored) return stored;
       return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
@@ -721,16 +728,34 @@
 
     function applyTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);
-      themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
-      localStorage.setItem('theme', theme);
+      if (themeToggle) themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+      if (!isEmbedded) localStorage.setItem('theme', theme);
     }
 
     applyTheme(getPreferredTheme());
 
-    themeToggle.addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme');
-      applyTheme(current === 'dark' ? 'light' : 'dark');
-    });
+    // If embedded, hide toggle + back link, watch parent theme
+    if (isEmbedded) {
+      if (themeToggle) themeToggle.style.display = 'none';
+      const backLink = document.querySelector('.back-link');
+      if (backLink) backLink.style.display = 'none';
+
+      // Watch for parent theme changes
+      const observer = new MutationObserver(() => {
+        try {
+          const parentTheme = parent.document.documentElement.getAttribute('data-theme');
+          if (parentTheme) applyTheme(parentTheme);
+        } catch (e) {}
+      });
+      try {
+        observer.observe(parent.document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+      } catch (e) {}
+    } else {
+      themeToggle.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        applyTheme(current === 'dark' ? 'light' : 'dark');
+      });
+    }
 
     // ── SVG Helpers ──
     const NS = 'http://www.w3.org/2000/svg';
