@@ -24,7 +24,7 @@ The AI starts playing fair to lull you in. Then things escalate:
 - **The Flip** — "Oops, bumped the table" — the entire board rotates 180 degrees
 - **The Expansion** — if you somehow force a draw, the board grows a 4th row and the AI wins anyway
 
-Every loss ends with a fake legal contract requiring you to offer me a job. The terms get more absurd each round.
+Every loss ends with a legally binding contract requiring you to offer me a job. The terms get more absurd each round.
 
 ## The Build
 
