@@ -6,6 +6,7 @@ label: "Web Application"
 year: 2026
 tech: ["TypeScript", "React", "TanStack Start", "tRPC", "PostgreSQL", "Drizzle ORM", "Tailwind CSS", "shadcn/ui", "Docker"]
 featured: true
+image: "/popcorn-screenshot.png"
 liveUrl: "https://popcorn.tyrion.uk"
 githubUrl: ""
 order: 1

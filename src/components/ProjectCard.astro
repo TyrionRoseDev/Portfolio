@@ -7,14 +7,15 @@ interface Props {
   tech: string[];
   slug: string;
   githubUrl?: string;
+  image?: string;
 }
 
-const { title, description, label, year, tech, slug, githubUrl } = Astro.props;
+const { title, description, label, year, tech, slug, githubUrl, image } = Astro.props;
 ---
 
 <a href={`/projects/${slug}`} class="project-card reveal reveal-d2">
   <div class="proj-img-wrap">
-    <img src="/popcorn-screenshot.png" alt={title} class="proj-img-inner" />
+    <img src={image || '/popcorn-screenshot.png'} alt={title} class="proj-img-inner" />
     <div class="proj-overlay"><span>View project</span></div>
   </div>
   <div class="proj-body">

@@ -6,6 +6,7 @@ label: "Interactive Game"
 year: 2026
 tech: ["HTML", "CSS", "JavaScript", "SVG"]
 featured: true
+image: "/tictactoe-screenshot.png"
 liveUrl: "/game.html"
 githubUrl: "https://github.com/TyrionRoseDev/annoying-tic-tac-toe"
 order: 2

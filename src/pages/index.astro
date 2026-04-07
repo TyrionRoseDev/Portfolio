@@ -31,6 +31,7 @@ const projects = (await getCollection('projects'))
           tech={project.data.tech}
           slug={project.id}
           githubUrl={project.data.githubUrl}
+          image={project.data.image}
         />
       ))}
     </section>
