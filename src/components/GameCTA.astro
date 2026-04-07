@@ -1,4 +1,5 @@
 ---
+import TicTacToe from './TicTacToe.astro';
 ---
 
 <div class="game-inner reveal">
@@ -6,9 +7,7 @@
     <p class="game-desc">I made a totally fair game of Tic-Tac-Toe. No cheating. Definitely no cheating. If you win, you don't have to hire me.</p>
     <p class="game-disclaimer">(You won't win.)</p>
   </div>
-  <div class="game-embed">
-    <iframe src="/game.html" title="Tic-Tac-Toe — Totally Fair Edition" loading="lazy"></iframe>
-  </div>
+  <TicTacToe />
 </div>
 
 <style>
@@ -35,26 +34,10 @@
     font-style: italic;
   }
 
-  .game-embed {
-    width: 100%;
-    border-radius: 16px;
-    overflow: hidden;
-  }
-
-  .game-embed iframe {
-    width: 100%;
-    height: 700px;
-    border: none;
-    display: block;
-  }
-
   @media (max-width: 768px) {
     .game-text {
       text-align: center;
       max-width: none;
-    }
-    .game-embed iframe {
-      height: 600px;
     }
   }
 </style>
