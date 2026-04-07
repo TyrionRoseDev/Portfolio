@@ -5,6 +5,7 @@ import Marquee from '../components/Marquee.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import About from '../components/About.astro';
+import GameCTA from '../components/GameCTA.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 import { getCollection } from 'astro:content';
@@ -33,6 +34,8 @@ const projects = (await getCollection('projects'))
         />
       ))}
     </section>
+
+    <GameCTA />
 
     <section class="sect" id="about">
       <SectionHeader number="03" label="ABOUT" title="A bit" accent="about me" />
