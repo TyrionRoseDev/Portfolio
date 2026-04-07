@@ -35,11 +35,14 @@ const projects = (await getCollection('projects'))
       ))}
     </section>
 
-    <GameCTA />
-
     <section class="sect" id="about">
       <SectionHeader number="03" label="ABOUT" title="A bit" accent="about me" />
       <About />
+    </section>
+
+    <section class="sect" id="game">
+      <SectionHeader number="04" label="INTERACTIVE" title="Think you can" accent="beat me?" />
+      <GameCTA />
     </section>
 
     <Contact />

@@ -1,46 +1,36 @@
 ---
 ---
 
-<section class="game-cta reveal" id="game">
-  <div class="game-inner">
-    <div class="game-text">
-      <span class="game-label">INTERACTIVE</span>
-      <h2 class="game-title">Think you can<br><span class="game-accent">beat me?</span></h2>
-      <p class="game-desc">I made a totally fair game of Tic-Tac-Toe. No cheating. Definitely no cheating. If you win, you don't have to hire me.</p>
-      <p class="game-disclaimer">(You won't win.)</p>
-      <a href="/game.html" class="game-btn">Play Now</a>
-    </div>
-    <div class="game-preview">
-      <svg viewBox="0 0 360 360" class="game-grid" aria-hidden="true">
-        <!-- Wobbly grid lines -->
-        <path d="M 121 12 Q 118 182 119 348" stroke="var(--border)" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path d="M 239 14 Q 243 178 241 346" stroke="var(--border)" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path d="M 14 121 Q 176 118 346 120" stroke="var(--border)" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path d="M 12 241 Q 182 244 348 239" stroke="var(--border)" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <!-- O in top-left -->
-        <circle cx="60" cy="60" r="30" stroke="var(--accent)" stroke-width="4" fill="none" opacity="0.6"/>
-        <!-- X in center -->
-        <line x1="152" y1="152" x2="208" y2="208" stroke="var(--fg)" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
-        <line x1="208" y1="152" x2="152" y2="208" stroke="var(--fg)" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
-        <!-- O in bottom-right -->
-        <circle cx="300" cy="300" r="30" stroke="var(--accent)" stroke-width="4" fill="none" opacity="0.6"/>
-        <!-- Eraser scribble over top-right X (the cheat) -->
-        <line x1="272" y1="32" x2="328" y2="88" stroke="var(--fg)" stroke-width="4" stroke-linecap="round" opacity="0.15"/>
-        <line x1="328" y1="32" x2="272" y2="88" stroke="var(--fg)" stroke-width="4" stroke-linecap="round" opacity="0.15"/>
-        <!-- Replacement O drawn over erased X -->
-        <circle cx="300" cy="60" r="30" stroke="var(--accent)" stroke-width="4" fill="none" opacity="0.4"/>
-      </svg>
-    </div>
+<div class="game-inner reveal">
+  <div class="game-text">
+    <p class="game-desc">I made a totally fair game of Tic-Tac-Toe. No cheating. Definitely no cheating. If you win, you don't have to hire me.</p>
+    <p class="game-disclaimer">(You won't win.)</p>
+    <a href="/game.html" class="game-btn">Play Now</a>
   </div>
-</section>
+  <div class="game-preview">
+    <svg viewBox="0 0 360 360" class="game-grid" aria-hidden="true">
+      <!-- Wobbly grid lines -->
+      <path d="M 121 12 Q 118 182 119 348" stroke="var(--border)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M 239 14 Q 243 178 241 346" stroke="var(--border)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M 14 121 Q 176 118 346 120" stroke="var(--border)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M 12 241 Q 182 244 348 239" stroke="var(--border)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <!-- O in top-left -->
+      <circle cx="60" cy="60" r="30" stroke="var(--accent)" stroke-width="4" fill="none" opacity="0.6"/>
+      <!-- X in center -->
+      <line x1="152" y1="152" x2="208" y2="208" stroke="var(--fg)" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+      <line x1="208" y1="152" x2="152" y2="208" stroke="var(--fg)" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+      <!-- O in bottom-right -->
+      <circle cx="300" cy="300" r="30" stroke="var(--accent)" stroke-width="4" fill="none" opacity="0.6"/>
+      <!-- Erased X (faded out) -->
+      <line x1="272" y1="32" x2="328" y2="88" stroke="var(--fg)" stroke-width="4" stroke-linecap="round" opacity="0.15"/>
+      <line x1="328" y1="32" x2="272" y2="88" stroke="var(--fg)" stroke-width="4" stroke-linecap="round" opacity="0.15"/>
+      <!-- Replacement O drawn over erased X -->
+      <circle cx="300" cy="60" r="30" stroke="var(--accent)" stroke-width="4" fill="none" opacity="0.4"/>
+    </svg>
+  </div>
+</div>
 
 <style>
-  .game-cta {
-    padding: 80px 56px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
   .game-inner {
     display: flex;
     align-items: center;
@@ -55,31 +45,6 @@
 
   .game-text {
     flex: 1;
-  }
-
-  .game-label {
-    font-size: 11px;
-    letter-spacing: 4px;
-    color: var(--accent);
-    font-weight: 500;
-    display: block;
-    margin-bottom: 16px;
-  }
-
-  .game-title {
-    font-family: var(--font-serif);
-    font-size: 48px;
-    font-weight: 900;
-    letter-spacing: -2px;
-    color: var(--fg);
-    line-height: 1.1;
-    margin-bottom: 20px;
-  }
-
-  .game-accent {
-    color: var(--accent);
-    font-style: italic;
-    font-weight: 500;
   }
 
   .game-desc {
@@ -133,17 +98,11 @@
   }
 
   @media (max-width: 768px) {
-    .game-cta {
-      padding: 40px 24px;
-    }
     .game-inner {
       flex-direction: column;
       padding: 40px 28px;
       gap: 40px;
       text-align: center;
-    }
-    .game-title {
-      font-size: 36px;
     }
     .game-desc {
       max-width: none;
