@@ -1406,6 +1406,46 @@
     const btnReplay = document.getElementById('btnReplay');
 
     function showContract() {
+      // If embedded in iframe, open the full game page in a new tab for the contract
+      if (isEmbedded) {
+        modalOverlay.innerHTML = `
+          <div id="modal" style="
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1rem 1rem 0 0;
+            width: min(95vw, 420px);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transform: translateY(0);
+          ">
+            <h2 style="font-family: 'Crimson Text', serif; font-variant: small-caps; font-size: 1.2rem; color: var(--fg); margin-bottom: 1rem;">You lost.</h2>
+            <p style="color: var(--fg-body); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem;">
+              You are now legally obligated to offer me a job.<br>
+              <span style="color: var(--fg-muted); font-size: 0.8rem; font-style: italic;">Sign the contract to make it official.</span>
+            </p>
+            <a href="/game.html" target="_top" style="
+              display: inline-block;
+              padding: 14px 36px;
+              background: var(--accent-mid);
+              color: #fff;
+              text-decoration: none;
+              border-radius: 8px;
+              font-weight: 600;
+              font-size: 0.95rem;
+              transition: background 0.2s;
+            ">Sign the Contract</a>
+            <br>
+            <button onclick="document.getElementById('modalOverlay').classList.remove('visible'); state.round++; resetGame();" style="
+              background: none; border: none; color: var(--fg-muted);
+              font-size: 0.6rem; font-family: inherit; cursor: pointer;
+              margin-top: 1rem;
+            ">Play Again (you'll lose)</button>
+          </div>
+        `;
+        modalOverlay.classList.add('visible');
+        return;
+      }
+
       const data = getContractData(state.round);
 
       admissionEl.textContent = `I, _______, hereby admit that ${data.admission}`;
