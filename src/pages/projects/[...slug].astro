@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
-const { title, description, longDescription, label, year, tech, liveUrl, githubUrl, image } = project.data;
+const { title, description, longDescription, label, year, tech, image, video, liveUrl, githubUrl } = project.data;
 ---
 
 <Layout title={`${title} — Tyrion`} description={description}>
@@ -32,7 +32,11 @@ const { title, description, longDescription, label, year, tech, liveUrl, githubU
     </div>
 
     <div class="pd-cover">
-      <img src={image || '/popcorn-screenshot.png'} alt={title} class="pd-cover-inner" />
+      {video ? (
+        <video src={video} autoplay loop muted playsinline class="pd-cover-inner" />
+      ) : (
+        <img src={image || "/popcorn-screenshot.png"} alt={title} class="pd-cover-inner" />
+      )}
     </div>
 
     <div class="pd-content">

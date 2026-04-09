@@ -12,6 +12,7 @@ const projects = defineCollection({
     tech: z.array(z.string()),
     featured: z.boolean().default(false),
     image: z.string().optional(),
+    video: z.string().optional(),
     gallery: z.array(z.string()).default([]),
     liveUrl: z.string().optional(),
     githubUrl: z.string().optional(),

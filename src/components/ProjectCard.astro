@@ -6,16 +6,21 @@ interface Props {
   year: number;
   tech: string[];
   slug: string;
-  githubUrl?: string;
   image?: string;
+  video?: string;
+  githubUrl?: string;
 }
 
-const { title, description, label, year, tech, slug, githubUrl, image } = Astro.props;
+const { title, description, label, year, tech, slug, image, video, githubUrl } = Astro.props;
 ---
 
 <a href={`/projects/${slug}`} class="project-card reveal reveal-d2">
   <div class="proj-img-wrap">
-    <img src={image || '/popcorn-screenshot.png'} alt={title} class="proj-img-inner" />
+    {video ? (
+      <video src={video} autoplay loop muted playsinline class="proj-img-inner" />
+    ) : (
+      <img src={image || "/popcorn-screenshot.png"} alt={title} class="proj-img-inner" />
+    )}
     <div class="proj-overlay"><span>View project</span></div>
   </div>
   <div class="proj-body">

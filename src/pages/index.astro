@@ -30,8 +30,9 @@ const projects = (await getCollection('projects'))
           year={project.data.year}
           tech={project.data.tech}
           slug={project.id}
-          githubUrl={project.data.githubUrl}
           image={project.data.image}
+          video={project.data.video}
+          githubUrl={project.data.githubUrl}
         />
       ))}
     </section>
