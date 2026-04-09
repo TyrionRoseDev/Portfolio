@@ -494,6 +494,25 @@
       color: #5a4a3a;
     }
 
+    .btn-decline {
+      background: none;
+      border: none;
+      color: #c4b4a4;
+      font-size: 0.45rem;
+      font-family: 'Crimson Text', serif;
+      cursor: pointer;
+      transition: transform 0.15s, color 0.2s;
+      position: relative;
+    }
+
+    .btn-decline:hover {
+      color: #8a7a6a;
+    }
+
+    .btn-decline.dodging {
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
     /* ── Pencil Draw Animation ── */
     @keyframes pencilDraw {
       to { stroke-dashoffset: 0; }
@@ -625,6 +644,7 @@
       <div class="actions">
         <button class="btn-sign" id="btnSign">Sign &amp;<br>Submit</button>
         <button class="btn-replay" id="btnReplay">Play Again (you'll lose)</button>
+        <button class="btn-decline" id="btnDecline">Decline (heartless)</button>
       </div>
     </div>
   </div>
@@ -1315,7 +1335,7 @@
     function endGame(winner) {
       // Always verify actual board state — never trust the caller
       const actualWinner = checkWinner(state.board);
-      if (actualWinner !== AI && winner !== PLAYER) {
+      if (actualWinner !== AI) {
         cheatExpandBoard();
         return;
       }
@@ -1473,6 +1493,10 @@
 
       nameField.value = '';
       clearSignature();
+      declineDodges = 0;
+      btnDecline.textContent = declineTexts[0];
+      btnDecline.style.transform = '';
+      btnDecline.classList.remove('dodging');
       modalOverlay.classList.add('visible');
     }
 
@@ -1499,6 +1523,33 @@
 
     btnReplay.addEventListener('click', () => {
       hideContract();
+      state.round++;
+      resetGame();
+    });
+
+    // ── Decline Button (dodges mouse) ──
+    const btnDecline = document.getElementById('btnDecline');
+    let declineDodges = 0;
+    const declineTexts = [
+      "Decline (heartless)",
+      "Are you sure? 🥺",
+      "Fine. Click again.",
+    ];
+
+    btnDecline.addEventListener('mouseenter', () => {
+      if (declineDodges < 2) {
+        btnDecline.classList.add('dodging');
+        const x = (Math.random() - 0.5) * 120;
+        const y = (Math.random() - 0.5) * 30;
+        btnDecline.style.transform = `translate(${x}px, ${y}px)`;
+        declineDodges++;
+        btnDecline.textContent = declineTexts[declineDodges];
+      }
+    });
+
+    btnDecline.addEventListener('click', () => {
+      hideContract();
+      setCommentary("Fine. I didn't want you to hire me anyway. 😤");
       state.round++;
       resetGame();
     });
