@@ -14,7 +14,7 @@ order: 2
 
 ## The Problem
 
-Learning guitar online can feel disconnected. You watch a lesson, but there's no hands-on way to practise what you've just learned without switching between tabs, apps, and paper chord charts. I wanted to build something that brings the interactive side of learning directly into the browser.
+When you're learning guitar through YouTube videos or online courses, there's no easy way to know if you're actually doing it right. You can follow along, but without real-time feedback on your finger placement, strumming patterns, or timing, bad habits sneak in and go unnoticed. I wanted to build something that could bridge that gap — giving learners instant, visual feedback so they can self-correct as they practise.
 
 ## The Approach
 
