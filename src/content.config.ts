@@ -48,4 +48,18 @@ const resume = defineCollection({
   }),
 });
 
-export const collections = { projects, resume };
+const certificates = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/certificates' }),
+  schema: z.object({
+    title: z.string(),
+    issuer: z.string(),
+    date: z.string(),
+    credentialId: z.string(),
+    credentialUrl: z.string(),
+    image: z.string().optional(),
+    skills: z.array(z.string()).default([]),
+    order: z.number().default(0),
+  }),
+});
+
+export const collections = { projects, resume, certificates };
