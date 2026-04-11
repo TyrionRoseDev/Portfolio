@@ -5,7 +5,7 @@ longDescription: "A rigged tic-tac-toe game with hand-drawn SVG animations, esca
 label: "Interactive Game"
 year: 2026
 tech: ["HTML", "CSS", "JavaScript", "SVG"]
-featured: true
+featured: false
 image: "/tictactoe-screenshot.png"
 liveUrl: "/game.html"
 githubUrl: "https://github.com/TyrionRoseDev/annoying-tic-tac-toe"
