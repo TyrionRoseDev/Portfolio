@@ -1,7 +1,7 @@
 ---
 title: "Strum"
 description: "An interactive guitar learning app with a playable fretboard, rhythm exercises, and chord guides."
-longDescription: "Strum is a web app designed to help people learn guitar. It features an interactive SVG fretboard, rhythm and strumming exercises, chord and scale libraries, and structured practice sessions that complement popular online guitar courses. With real-time audio feedback and a gamified progression system, it makes learning guitar fun and hands-on."
+longDescription: "Strum is a web app designed to help people learn guitar. It's got an interactive SVG fretboard, rhythm and strumming exercises, chord and scale libraries, and structured practice sessions that complement popular online guitar courses. With real-time audio feedback and a gamified progression system, it makes learning guitar fun and hands-on."
 label: "Web Application"
 year: 2026
 tech: ["TypeScript", "React", "TanStack Start", "tRPC", "PostgreSQL", "Drizzle ORM", "Tailwind CSS", "Tone.js", "shadcn/ui"]
@@ -14,7 +14,7 @@ order: 2
 
 ## The Problem
 
-When you're learning guitar through YouTube videos or online courses, there's no easy way to know if you're actually doing it right. You can follow along, but without real-time feedback on your finger placement, strumming patterns, or timing, bad habits sneak in and go unnoticed. I wanted to build something that could bridge that gap — giving learners instant, visual feedback so they can self-correct as they practise.
+When you're learning guitar through YouTube videos or online courses, there's no easy way to know if you're actually doing it right. You can follow along, but without real-time feedback on your finger placement, strumming patterns, or timing, bad habits sneak in and you don't even notice. I wanted to build something that bridges that gap and gives learners instant, visual feedback so they can self-correct as they practise.
 
 ## The Approach
 
