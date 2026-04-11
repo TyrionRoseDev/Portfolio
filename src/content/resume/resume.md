@@ -13,7 +13,7 @@ experience:
 education:
   - degree: "BSc (Honours) Computing and IT"
     school: "University"
-    year: "2025 — Present"
+    year: "2025 · Present"
 skills:
   languages: ["HTML", "CSS", "JavaScript"]
   frontend: ["Astro", "Tailwind CSS", "Responsive Design"]

@@ -7,7 +7,7 @@ const certificates = (await getCollection('certificates'))
   .sort((a, b) => a.data.order - b.data.order);
 ---
 
-<Layout title="Certificates — Tyrion" description="Professional certifications and course completions.">
+<Layout title="Certificates · Tyrion" description="Professional certifications and course completions.">
   <main class="ct">
     <div class="ct-hero">
       <div class="ct-hero-left">
@@ -68,7 +68,7 @@ const certificates = (await getCollection('certificates'))
   <Footer />
 </Layout>
 
-<style>
+<style is:global>
   .ct { max-width: 1100px; margin: 0 auto; }
 
   /* ── Hero ── */

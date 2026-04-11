@@ -10,7 +10,7 @@ const { number, label, title, accent } = Astro.props;
 ---
 
 <div class="reveal">
-  <div class="sect-num">{number} — {label}</div>
+  <div class="sect-num">{number} · {label}</div>
   <h2 class="sect-h" set:html={`${title}<br><span class="sect-accent">${accent}</span>`} />
 </div>
 

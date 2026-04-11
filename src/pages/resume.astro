@@ -19,7 +19,7 @@ const skillCategories = [
 ].filter(cat => cat.items.length > 0);
 ---
 
-<Layout title="Resume — Tyrion" description="My professional experience and skills.">
+<Layout title="Resume · Tyrion" description="My professional experience and skills.">
   <main class="rs">
     <div class="rs-hero">
       <div class="rs-hero-left">
@@ -38,7 +38,7 @@ const skillCategories = [
       <div class="rs-timeline">
         {experience.map((exp) => (
           <div class="rs-entry reveal">
-            <div class="rs-date">{exp.startDate} —<br />{exp.endDate}</div>
+            <div class="rs-date">{exp.startDate}<br />{exp.endDate}</div>
             <div class="rs-entry-body">
               <div class="rs-role">{exp.role}</div>
               <div class="rs-company">{exp.company}</div>

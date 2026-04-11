@@ -1,7 +1,7 @@
 ---
-title: "Tic-Tac-Toe — Totally Fair Edition"
+title: "Tic-Tac-Toe: Totally Fair Edition"
 description: "A totally fair game of Tic-Tac-Toe. Beat me and you don't have to hire me. (You won't beat me.)"
-longDescription: "A rigged tic-tac-toe game with hand-drawn SVG animations, escalating cheat mechanics, and a legally binding job offer contract. Built as a single HTML file with zero dependencies. Just vibes, cheating, and a cartoon pencil."
+longDescription: "A rigged tic-tac-toe game with hand-drawn SVG animations, escalating cheat mechanics, and a job offer contract. Built as a single HTML file with zero dependencies. Just vibes, cheating, and a cartoon pencil."
 label: "Interactive Game"
 year: 2026
 tech: ["HTML", "CSS", "JavaScript", "SVG"]
@@ -24,7 +24,7 @@ The AI starts playing fair to lull you in. Then things escalate:
 - **The Flip**: "Oops, bumped the table". The entire board rotates 180 degrees
 - **The Expansion**: if you somehow force a draw, the board grows a 4th row and the AI wins anyway
 
-Every loss ends with a legally binding contract requiring you to offer me a job. The terms get more absurd each round.
+Every loss ends with a contract requiring you to offer me a job. The terms get more absurd each round.
 
 ## The Build
 

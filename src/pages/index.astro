@@ -21,7 +21,7 @@ const projects = (await getCollection('projects'))
     <Marquee />
 
     <section class="sect" id="projects">
-      <SectionHeader number="02" label="SELECTED WORK" title="Featured" accent="projects" />
+      <SectionHeader number="02" label="FEATURED" title="Featured" accent="projects" />
       {projects.map((project) => (
         <ProjectCard
           title={project.data.title}
@@ -36,7 +36,8 @@ const projects = (await getCollection('projects'))
         />
       ))}
       <a href="/projects" class="view-all">
-        View all projects <span class="view-all-arr"></span>
+        <span class="view-all-arr"></span>
+        See all projects
       </a>
     </section>
 
@@ -71,23 +72,26 @@ const projects = (await getCollection('projects'))
     gap: 12px;
     margin-top: 48px;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 3px;
     color: var(--accent);
     text-decoration: none;
-    transition: gap 0.3s;
+    transition: color 0.3s;
   }
   .view-all:hover {
-    gap: 20px;
+    color: var(--accent);
   }
   .view-all-arr {
     display: inline-block;
-    width: 24px;
+    width: 20px;
     height: 1px;
     background: var(--accent);
     position: relative;
-    transition: width 0.3s;
+    transition: all 0.3s;
+  }
+  .view-all:hover .view-all-arr {
+    width: 30px;
   }
   .view-all-arr::after {
     content: '';
@@ -99,8 +103,5 @@ const projects = (await getCollection('projects'))
     border-top: 1px solid var(--accent);
     border-right: 1px solid var(--accent);
     transform: rotate(45deg);
-  }
-  .view-all:hover .view-all-arr {
-    width: 36px;
   }
 </style>
