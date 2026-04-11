@@ -35,6 +35,9 @@ const projects = (await getCollection('projects'))
           githubUrl={project.data.githubUrl}
         />
       ))}
+      <a href="/projects" class="view-all">
+        View all projects <span class="view-all-arr"></span>
+      </a>
     </section>
 
     <section class="sect" id="about">
@@ -61,5 +64,43 @@ const projects = (await getCollection('projects'))
   }
   @media (max-width: 768px) {
     .sect { padding: 80px 24px; }
+  }
+  .view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 48px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-decoration: none;
+    transition: gap 0.3s;
+  }
+  .view-all:hover {
+    gap: 20px;
+  }
+  .view-all-arr {
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+    position: relative;
+    transition: width 0.3s;
+  }
+  .view-all-arr::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -3px;
+    width: 6px;
+    height: 6px;
+    border-top: 1px solid var(--accent);
+    border-right: 1px solid var(--accent);
+    transform: rotate(45deg);
+  }
+  .view-all:hover .view-all-arr {
+    width: 36px;
   }
 </style>
