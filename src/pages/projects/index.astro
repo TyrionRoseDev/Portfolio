@@ -1,0 +1,97 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout title="Projects — Tyrion" description="All projects by Tyrion.">
+  <main>
+    <section class="sect">
+      <div class="back">
+        <a href="/">
+          <span class="back-arrow"></span>
+          Back home
+        </a>
+      </div>
+      <SectionHeader number="01" label="ALL WORK" title="All" accent="projects" />
+      {projects.map((project) => (
+        <ProjectCard
+          title={project.data.title}
+          description={project.data.description}
+          label={project.data.label}
+          year={project.data.year}
+          tech={project.data.tech}
+          slug={project.id}
+          image={project.data.image}
+          video={project.data.video}
+          githubUrl={project.data.githubUrl}
+        />
+      ))}
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .sect {
+    padding: 160px 56px;
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .back {
+    margin-bottom: 48px;
+  }
+  .back a {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--fg-muted);
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: color 0.3s;
+  }
+  .back a:hover {
+    color: var(--accent);
+  }
+  .back-arrow {
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: var(--fg-muted);
+    position: relative;
+    transition: all 0.3s;
+  }
+  .back a:hover .back-arrow {
+    background: var(--accent);
+    width: 30px;
+  }
+  .back-arrow::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -3px;
+    width: 6px;
+    height: 6px;
+    border-bottom: 1px solid var(--fg-muted);
+    border-left: 1px solid var(--fg-muted);
+    transform: rotate(45deg);
+    transition: border-color 0.3s;
+  }
+  .back a:hover .back-arrow::before {
+    border-color: var(--accent);
+  }
+  @media (max-width: 768px) {
+    .sect {
+      padding: 80px 24px;
+    }
+  }
+</style>
