@@ -1458,7 +1458,7 @@
               You are now legally obligated to offer me a job.<br>
               <span style="color: var(--fg-muted); font-size: 0.8rem; font-style: italic;">Sign the contract to make it official.</span>
             </p>
-            <a href="/game.html" target="_top" style="
+            <a href="/game.html?contract=1&round=${state.round}" target="_top" style="
               display: inline-block;
               padding: 14px 36px;
               background: var(--accent-mid);
@@ -1815,6 +1815,20 @@
     drawGrid();
     createCellOverlays();
     setCommentary('Your move!');
+
+    // If arriving from the embedded game's "Sign the Contract" link, show the contract now.
+    if (!isEmbedded) {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('contract') === '1') {
+        const round = parseInt(params.get('round'), 10);
+        if (Number.isInteger(round) && round >= 1 && round <= 4) {
+          state.round = round;
+          document.getElementById('roundNum').textContent = state.round;
+        }
+        history.replaceState(null, '', '/game.html');
+        showContract();
+      }
+    }
   </script>
 
 </body>
