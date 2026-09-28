@@ -13,8 +13,9 @@ if (!resumeData) {
 const { experience, education, skills } = resumeData;
 
 const skillCategories = [
-  { title: 'Languages', items: skills.languages },
-  { title: 'Frontend', items: skills.frontend },
+  { title: 'Front end', items: skills.frontend },
+  { title: 'Design', items: skills.design },
+  { title: 'Back end', items: skills.backend },
   { title: 'Tools', items: skills.tools },
 ].filter(cat => cat.items.length > 0);
 ---
@@ -26,7 +27,7 @@ const skillCategories = [
         <div class="rs-hero-label">Curriculum Vitae</div>
         <h1 class="rs-title">My <em>résumé</em></h1>
       </div>
-      <a href="#" class="rs-download">↓ Download PDF</a>
+      <a href="/Tyrion_Meredith_CV.pdf" download class="rs-download">↓ Download PDF</a>
     </div>
 
     <div class="rs-section">
@@ -59,8 +60,9 @@ const skillCategories = [
         {education.map((edu) => (
           <div class="rs-edu-card">
             <div class="rs-edu-degree">{edu.degree}</div>
-            <div class="rs-edu-school">{edu.school}</div>
-            <div class="rs-edu-year">{edu.year}</div>
+            {edu.school && <div class="rs-edu-school">{edu.school}</div>}
+            {edu.year && <div class="rs-edu-year">{edu.year}</div>}
+            {edu.note && <p class="rs-edu-note">{edu.note}</p>}
           </div>
         ))}
       </div>
@@ -160,6 +162,7 @@ const skillCategories = [
   .rs-edu-degree { font-family: var(--font-serif); font-size: 18px; font-weight: 700; color: var(--fg); margin-bottom: 4px; }
   .rs-edu-school { font-size: 14px; color: var(--accent); font-weight: 500; margin-bottom: 4px; }
   .rs-edu-year { font-size: 12px; color: var(--fg-muted); }
+  .rs-edu-note { font-size: 14px; color: var(--fg-light); line-height: 1.75; font-weight: 350; margin-top: 12px; }
 
   .rs-skills-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

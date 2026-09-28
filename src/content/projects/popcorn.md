@@ -18,4 +18,4 @@ I love films and I wanted somewhere to track what I've watched that actually fel
 
 ## The Approach
 
-I went with a retro drive-in cinema theme to make the whole experience feel nostalgic and playful. The UI uses vintage ticket stub graphics, marquee-style headers and a warm colour palette. It's built with Vite and TanStack Router, with light/dark theme support and plans for smart recommendations and year-end viewing stats.
+I went with a retro drive-in cinema theme to make the whole experience feel nostalgic and playful. The UI uses vintage ticket stub graphics, marquee-style headers and a warm colour palette. It's built with Vite and TanStack Router, with light/dark theme support. You can track films and TV episodes, keep watchlists, follow friends and get recommendations based on your taste.
