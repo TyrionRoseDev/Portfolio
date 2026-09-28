@@ -36,7 +36,7 @@ src/content/
 
 The schemas are in `src/content.config.ts`, so a missing or mistyped field fails the build. To add a project I create a new Markdown file in `src/content/projects/`, set `featured: true` if it should appear on the home page, and use `order` to control where it sits.
 
-Static files such as screenshots, certificate images and the game (`public/game.html`) live in `public/`.
+Project screenshots and my photo live in `src/assets/` so Astro can resize them and serve AVIF/WebP. A project's `image` is a path relative to its Markdown file, for example `../../assets/projects/popcorn-screenshot.png`. Fonts are self-hosted from `src/assets/fonts/` (see `src/styles/fonts.css`). Other static files, such as certificate images, the demo video and the game (`public/game.html`), live in `public/`.
 
 ## Running it locally
 

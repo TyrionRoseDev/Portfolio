@@ -1,6 +1,21 @@
+---
+import { Picture } from 'astro:assets';
+import photo from '../assets/photo.jpeg';
+---
+
 <div class="ab-layout reveal reveal-d2">
   <div class="ab-photo-wrap">
-    <img src="/photo.jpeg" alt="Tyrion" class="ab-photo" />
+    <Picture
+      src={photo}
+      alt="Tyrion"
+      class="ab-photo"
+      formats={['avif', 'webp']}
+      quality={60}
+      widths={[320, 480, 640, 960]}
+      sizes="(max-width: 768px) 240px, 300px"
+      loading="lazy"
+      decoding="async"
+    />
     <div class="ab-photo-border" aria-hidden="true"></div>
     <div class="ab-photo-accent" aria-hidden="true"></div>
   </div>
@@ -34,7 +49,7 @@
   .ab-layout { display: grid; grid-template-columns: 300px 1fr; gap: 72px; align-items: start; }
   .ab-photo-wrap { position: relative; }
   .ab-photo {
-    width: 100%; aspect-ratio: 3/4; border-radius: 24px;
+    width: 100%; height: auto; aspect-ratio: 3/4; border-radius: 24px;
     object-fit: cover; object-position: center top;
     position: relative; z-index: 1; border: 1px solid var(--border);
   }

@@ -6,7 +6,7 @@ label: "Web Application"
 year: 2026
 tech: ["JavaScript", "React", "Mapbox GL", "Vite", "Paleobiology Database API", "Wikipedia API", "Docker"]
 featured: true
-image: "/fossilfinder-screenshot.png"
+image: "../../assets/projects/fossilfinder-screenshot.png"
 liveUrl: "https://fossil-finder.tyrion.uk/"
 githubUrl: ""
 order: 2

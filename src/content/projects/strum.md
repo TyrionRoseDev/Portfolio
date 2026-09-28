@@ -6,7 +6,6 @@ label: "Web Application"
 year: 2026
 tech: ["TypeScript", "React", "TanStack Start", "tRPC", "PostgreSQL", "Drizzle ORM", "Tailwind CSS", "Tone.js", "shadcn/ui"]
 featured: false
-image: "/guitar-app-screenshot.png"
 video: "/strum-demo.mp4"
 githubUrl: ""
 order: 2

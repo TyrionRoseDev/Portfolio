@@ -2,6 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import Footer from '../../components/Footer.astro';
 import { getCollection, render } from 'astro:content';
+import { Picture } from 'astro:assets';
+import fallbackImage from '../../assets/projects/popcorn-screenshot.png';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -35,7 +37,17 @@ const { title, description, longDescription, label, year, tech, image, video, li
       {video ? (
         <video src={video} autoplay loop muted playsinline class="pd-cover-inner" />
       ) : (
-        <img src={image || "/popcorn-screenshot.png"} alt={title} class="pd-cover-inner" />
+        <Picture
+          src={image ?? fallbackImage}
+          alt={title}
+          class="pd-cover-inner"
+          formats={['avif', 'webp']}
+          quality={80}
+          widths={[480, 800, 1200, 1600]}
+          sizes="(max-width: 768px) 80vw, 800px"
+          loading="eager"
+          fetchpriority="high"
+        />
       )}
     </div>
 
@@ -112,6 +124,8 @@ const { title, description, longDescription, label, year, tech, image, video, li
     background-image: radial-gradient(color-mix(in srgb, var(--accent) 6%, transparent) 1.5px, transparent 1.5px);
     background-size: 24px 24px;
   }
+  /* Let the <img> inside <picture> size itself against .pd-cover as before. */
+  .pd-cover picture { display: contents; }
   .pd-cover-inner {
     width: 80%; height: 75%;
     border-radius: 16px; box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
