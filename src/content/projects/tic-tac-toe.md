@@ -9,23 +9,25 @@ featured: false
 image: "../../assets/projects/tictactoe-screenshot.png"
 liveUrl: "/game.html"
 githubUrl: "https://github.com/TyrionRoseDev/annoying-tic-tac-toe"
-order: 2
+order: 7
 ---
 
-## The Idea
+## The idea
 
 I wanted something on my portfolio that people would actually remember. Not another project card, but something interactive, funny, and a little bit cheeky. A game you can't win, with a job offer you can't refuse.
 
-## How It Cheats
+## How it cheats
 
 The AI starts playing fair to lull you in. Then things escalate:
 
-- **The Eraser**: a cartoon pencil flips around and rubs out your X with the eraser end, complete with rubber shavings
-- **The Flip**: "Oops, bumped the table". The entire board rotates 180 degrees
-- **The Expansion**: if you somehow force a draw, the board grows a 4th row and the AI wins anyway
+- **The Eraser**: a cartoon pencil flips around and rubs out your X with the eraser end, complete with rubber shavings.
+- **The Flip**: "Oops, bumped the table." The whole board rotates 180 degrees.
+- **The Expansion**: if you somehow force a draw, the board grows a fourth row and the AI wins anyway.
+- **The Nuke**: in later rounds it stops pretending and fills every empty square at once. "Speedrun."
+
 
 Every loss ends with a contract requiring you to offer me a job. The terms get more absurd each round.
 
-## The Build
+## The build
 
 Single HTML file, no frameworks, no build step. Hand-drawn SVG grid with wobbly lines, pencil-draw animations using stroke-dashoffset, a signature canvas, and a wax-seal submit button. It's designed to match my portfolio's theme system automatically.

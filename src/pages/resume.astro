@@ -20,20 +20,20 @@ const skillCategories = [
 ].filter(cat => cat.items.length > 0);
 ---
 
-<Layout title="Resume · Tyrion" description="My professional experience and skills.">
-  <main class="rs">
+<Layout title="CV · Tyrion Meredith" description="Tyrion Meredith's CV: experience, education and skills as a developer and designer in South Wales. Download it as a PDF.">
+  <main id="main" tabindex="-1" class="rs">
     <div class="rs-hero">
       <div class="rs-hero-left">
         <div class="rs-hero-label">Curriculum Vitae</div>
-        <h1 class="rs-title">My <em>résumé</em></h1>
+        <h1 class="rs-title">My <em>CV</em></h1>
       </div>
-      <a href="/Tyrion_Meredith_CV.pdf" download class="rs-download">↓ Download PDF</a>
+      <a href="/Tyrion_Meredith_CV.pdf" download class="rs-download">↓ Download PDF<span class="sr-only"> of my CV</span></a>
     </div>
 
     <div class="rs-section">
       <div class="rs-sect-header">
         <span class="rs-sect-num">01</span>
-        <span class="rs-sect-title">Experience</span>
+        <h2 class="rs-sect-title">Experience</h2>
         <div class="rs-sect-line"></div>
       </div>
       <div class="rs-timeline">
@@ -41,7 +41,7 @@ const skillCategories = [
           <div class="rs-entry reveal">
             <div class="rs-date">{exp.startDate}<br />{exp.endDate}</div>
             <div class="rs-entry-body">
-              <div class="rs-role">{exp.role}</div>
+              <h3 class="rs-role">{exp.role}</h3>
               <div class="rs-company">{exp.company}</div>
               <p class="rs-desc">{exp.description}</p>
             </div>
@@ -53,13 +53,13 @@ const skillCategories = [
     <div class="rs-section">
       <div class="rs-sect-header">
         <span class="rs-sect-num">02</span>
-        <span class="rs-sect-title">Education</span>
+        <h2 class="rs-sect-title">Education</h2>
         <div class="rs-sect-line"></div>
       </div>
       <div class="rs-edu-grid reveal">
         {education.map((edu) => (
           <div class="rs-edu-card">
-            <div class="rs-edu-degree">{edu.degree}</div>
+            <h3 class="rs-edu-degree">{edu.degree}</h3>
             {edu.school && <div class="rs-edu-school">{edu.school}</div>}
             {edu.year && <div class="rs-edu-year">{edu.year}</div>}
             {edu.note && <p class="rs-edu-note">{edu.note}</p>}
@@ -71,13 +71,13 @@ const skillCategories = [
     <div class="rs-section rs-section-last">
       <div class="rs-sect-header">
         <span class="rs-sect-num">03</span>
-        <span class="rs-sect-title">Skills</span>
+        <h2 class="rs-sect-title">Skills</h2>
         <div class="rs-sect-line"></div>
       </div>
       <div class="rs-skills-grid reveal">
         {skillCategories.map((cat) => (
           <div class="rs-skill-col">
-            <h4>{cat.title}</h4>
+            <h3>{cat.title}</h3>
             <ul>
               {cat.items.map((item) => <li>{item}</li>)}
             </ul>
@@ -111,7 +111,7 @@ const skillCategories = [
   }
   .rs-title em { font-style: italic; font-weight: 500; color: var(--accent); }
   .rs-download {
-    padding: 14px 32px; background: var(--accent); color: #fff;
+    padding: 14px 32px; background: var(--accent); color: var(--on-accent);
     border-radius: 100px; font-size: 12px; font-weight: 600;
     text-decoration: none; text-transform: uppercase; letter-spacing: 2px;
     transition: all 0.3s; display: flex; align-items: center; gap: 10px;
@@ -174,13 +174,13 @@ const skillCategories = [
   }
   .rs-skill-col:last-child { border-right: none; }
   .rs-skill-col:hover { background: color-mix(in srgb, var(--accent-pale) 30%, var(--surface)); }
-  .rs-skill-col h4 {
+  .rs-skill-col h3 {
     font-size: 10px; text-transform: uppercase; letter-spacing: 2px;
     color: var(--fg-muted); font-weight: 600; margin-bottom: 16px;
     padding-bottom: 12px; border-bottom: 1px solid var(--border);
     transition: color 0.3s;
   }
-  .rs-skill-col:hover h4 { color: var(--accent); }
+  .rs-skill-col:hover h3 { color: var(--accent); }
   .rs-skill-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
   .rs-skill-col li {
     font-size: 13px; color: var(--fg-light);

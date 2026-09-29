@@ -1,6 +1,6 @@
 ---
 title: "Popcorn"
-description: "A retro-themed film diary app for logging, tracking, and discovering movies. Best enjoyed with popcorn."
+description: "A retro-themed film diary app for logging, tracking and discovering films. Best enjoyed with popcorn."
 longDescription: "Popcorn is a film tracking app styled as a retro drive-in movie experience. It's got a film diary, watchlist, smart recommendations, year-end stats, and social reviews, all wrapped in a nostalgic drive-in aesthetic with vintage ticket stubs and marquee-style headers."
 label: "Web Application"
 year: 2026
@@ -8,14 +8,14 @@ tech: ["TypeScript", "React", "TanStack Start", "tRPC", "PostgreSQL", "Drizzle O
 featured: true
 image: "../../assets/projects/popcorn-screenshot.png"
 liveUrl: "https://popcorn.tyrion.uk"
-githubUrl: ""
+githubUrl: "https://github.com/TyrionRoseDev/popcorn"
 order: 1
 ---
 
-## The Problem
+## The problem
 
 I love films and I wanted somewhere to track what I've watched that actually felt fun to use. Not just another generic list app, but something with personality that I'd enjoy coming back to.
 
-## The Approach
+## The approach
 
-I went with a retro drive-in cinema theme to make the whole experience feel nostalgic and playful. The UI uses vintage ticket stub graphics, marquee-style headers and a warm colour palette. It's built with Vite and TanStack Router, with light/dark theme support. You can track films and TV episodes, keep watchlists, follow friends and get recommendations based on your taste.
+I went with a retro drive-in cinema theme to make the whole experience feel nostalgic and playful. The UI uses vintage ticket stub graphics, marquee-style headers and a warm colour palette. It's a full-stack app built with TanStack Start, tRPC and PostgreSQL, with light and dark themes. You can track films and TV episodes, keep watchlists, follow friends and get recommendations based on your taste.

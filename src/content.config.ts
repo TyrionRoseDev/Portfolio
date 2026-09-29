@@ -15,7 +15,12 @@ const projects = defineCollection({
     // so Astro can resize it and serve AVIF/WebP.
     image: image().optional(),
     video: z.string().optional(),
-    gallery: z.array(z.string()).default([]),
+    // Still frame shown before the video loads.
+    poster: z.string().optional(),
+    // Extra screenshots shown on the project page, same path rules as `image`.
+    gallery: z.array(z.object({ src: image(), alt: z.string() })).default([]),
+    // Shows an "In progress" badge on the card and project page.
+    status: z.enum(['live', 'in-progress']).default('live'),
     liveUrl: z.string().optional(),
     githubUrl: z.string().optional(),
     order: z.number().default(0),
@@ -53,13 +58,14 @@ const resume = defineCollection({
 
 const certificates = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/certificates' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     issuer: z.string(),
     date: z.string(),
     credentialId: z.string(),
     credentialUrl: z.string(),
-    image: z.string().optional(),
+    // Path relative to the Markdown file, like project images.
+    image: image().optional(),
     skills: z.array(z.string()).default([]),
     order: z.number().default(0),
   }),

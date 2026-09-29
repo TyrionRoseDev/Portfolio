@@ -13,15 +13,27 @@ import { getCollection } from 'astro:content';
 const projects = (await getCollection('projects'))
   .filter((p) => p.data.featured)
   .sort((a, b) => a.data.order - b.data.order);
+
+// Tells search engines who the site is about.
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Tyrion Meredith',
+  url: 'https://tyrion.uk',
+  jobTitle: 'Developer and designer',
+  address: { '@type': 'PostalAddress', addressRegion: 'South Wales', addressCountry: 'GB' },
+  sameAs: ['https://github.com/TyrionRoseDev', 'https://www.linkedin.com/in/tyrion-rose-meredith/'],
+};
 ---
 
 <Layout>
-  <main>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(person)} />
+  <main id="main" tabindex="-1">
     <Hero />
     <Marquee />
 
     <section class="sect" id="projects">
-      <SectionHeader number="02" label="FEATURED" title="Featured" accent="projects" />
+      <SectionHeader number="01" label="FEATURED" title="Featured" accent="projects" />
       {projects.map((project) => (
         <ProjectCard
           title={project.data.title}
@@ -32,7 +44,8 @@ const projects = (await getCollection('projects'))
           slug={project.id}
           image={project.data.image}
           video={project.data.video}
-          githubUrl={project.data.githubUrl}
+          poster={project.data.poster}
+          status={project.data.status}
         />
       ))}
       <a href="/projects" class="view-all">
@@ -42,12 +55,12 @@ const projects = (await getCollection('projects'))
     </section>
 
     <section class="sect" id="about">
-      <SectionHeader number="03" label="ABOUT" title="A bit" accent="about me" />
+      <SectionHeader number="02" label="ABOUT" title="A bit" accent="about me" />
       <About />
     </section>
 
     <section class="sect" id="game">
-      <SectionHeader number="04" label="INTERACTIVE" title="Think you can" accent="beat me?" />
+      <SectionHeader number="03" label="INTERACTIVE" title="Think you can" accent="beat me?" />
       <GameCTA />
     </section>
 
@@ -78,9 +91,6 @@ const projects = (await getCollection('projects'))
     color: var(--accent);
     text-decoration: none;
     transition: color 0.3s;
-  }
-  .view-all:hover {
-    color: var(--accent);
   }
   .view-all-arr {
     display: inline-block;

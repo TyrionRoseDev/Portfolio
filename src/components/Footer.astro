@@ -1,8 +1,10 @@
 <footer class="foot">
-  <span>© {new Date().getFullYear()}</span>
+  <span>© {new Date().getFullYear()} Tyrion Meredith</span>
   <div class="foot-links">
-    <a href="/resume">Resume</a>
+    <a href="/projects">Projects</a>
+    <a href="/resume">CV</a>
     <a href="https://github.com/TyrionRoseDev" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://www.linkedin.com/in/tyrion-rose-meredith/" target="_blank" rel="noopener">LinkedIn</a>
   </div>
   <span>Built with Astro</span>
 </footer>
@@ -21,5 +23,7 @@
   }
   .foot-links a:hover { color: var(--accent); }
 
-  @media (max-width: 768px) { .foot { padding: 24px; } }
+  @media (max-width: 768px) {
+    .foot { padding: 24px; flex-direction: column; gap: 16px; }
+  }
 </style>

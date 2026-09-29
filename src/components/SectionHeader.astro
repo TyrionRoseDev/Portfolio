@@ -4,14 +4,16 @@ interface Props {
   label: string;
   title: string;
   accent: string;
+  // Page-level headers (like /projects) render as the page's h1.
+  as?: 'h1' | 'h2';
 }
 
-const { number, label, title, accent } = Astro.props;
+const { number, label, title, accent, as: Heading = 'h2' } = Astro.props;
 ---
 
 <div class="reveal">
   <div class="sect-num">{number} · {label}</div>
-  <h2 class="sect-h" set:html={`${title}<br><span class="sect-accent">${accent}</span>`} />
+  <Heading class="sect-h">{title} <br /><span class="sect-accent">{accent}</span></Heading>
 </div>
 
 <style>
@@ -40,7 +42,7 @@ const { number, label, title, accent } = Astro.props;
     line-height: 1;
     margin-bottom: 56px;
   }
-  :global(.sect-accent) {
+  .sect-accent {
     color: var(--accent);
     font-style: italic;
     font-weight: 500;

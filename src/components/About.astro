@@ -7,7 +7,7 @@ import photo from '../assets/photo.jpeg';
   <div class="ab-photo-wrap">
     <Picture
       src={photo}
-      alt="Tyrion"
+      alt="Tyrion Meredith"
       class="ab-photo"
       formats={['avif', 'webp']}
       quality={60}
@@ -20,28 +20,29 @@ import photo from '../assets/photo.jpeg';
     <div class="ab-photo-accent" aria-hidden="true"></div>
   </div>
   <div class="ab-content">
-    <div class="ab-quote">
-      "I care about how things look and how they <span>feel to use</span>."
-    </div>
+    <blockquote class="ab-quote">
+      “I care about how things look and how they <span>feel to use</span>.”
+    </blockquote>
     <p class="ab-text">
-      Developer and designer based in South Wales. I make web apps from start to finish: I come up with the idea, design every screen, plan how it should work, build it with the help of AI tools, and launch it. I'm also studying a BSc (Honours) in Computing and IT with the Open University.
-      <br /><br />
+      Developer and designer based in South Wales. I make web apps, websites and games from start to finish: I come up with the idea, design every screen, plan how it should work, build it with the help of AI tools, and launch it. I'm also studying for a BSc (Hons) in Computing and IT with the Open University.
+    </p>
+    <p class="ab-text">
       I love everything from clean, minimal interfaces to bold, maximalist designs. If it's well-crafted, I'm into it. What I bring is taste and follow-through. I notice when something feels clumsy, and I finish what I start.
     </p>
-    <div class="ab-stats">
+    <dl class="ab-stats">
       <div class="ab-stat">
-        <label>Focus</label>
-        <span>Web</span>
+        <dt>Focus</dt>
+        <dd>Web and games</dd>
       </div>
       <div class="ab-stat">
-        <label>Based in</label>
-        <span>South Wales</span>
+        <dt>Based in</dt>
+        <dd>South Wales</dd>
       </div>
       <div class="ab-stat">
-        <label>Status</label>
-        <span class="hl">Open to work</span>
+        <dt>Status</dt>
+        <dd class="hl">Open to work</dd>
       </div>
-    </div>
+    </dl>
   </div>
 </div>
 
@@ -72,8 +73,9 @@ import photo from '../assets/photo.jpeg';
   .ab-quote span { color: var(--accent); }
   .ab-text {
     font-size: 16px; color: var(--fg-light);
-    line-height: 1.85; margin-bottom: 40px; font-weight: 350;
+    line-height: 1.85; margin-bottom: 20px; font-weight: 350;
   }
+  .ab-text:last-of-type { margin-bottom: 40px; }
   .ab-stats {
     display: grid; grid-template-columns: repeat(3, 1fr);
     border: 1px solid var(--border); border-radius: 16px;
@@ -84,11 +86,11 @@ import photo from '../assets/photo.jpeg';
   }
   .ab-stat:last-child { border-right: none; }
   .ab-stat:hover { background: color-mix(in srgb, var(--accent-pale) 30%, var(--surface)); }
-  .ab-stat label {
-    display: block; font-size: 9px; text-transform: uppercase;
+  .ab-stat dt {
+    display: block; font-size: 10px; text-transform: uppercase;
     letter-spacing: 3px; color: var(--fg-muted); font-weight: 600; margin-bottom: 8px;
   }
-  .ab-stat span { font-family: var(--font-serif); font-size: 17px; font-weight: 700; color: var(--fg); }
+  .ab-stat dd { font-family: var(--font-serif); font-size: 17px; font-weight: 700; color: var(--fg); }
   .ab-stat .hl { color: var(--accent); }
 
   @media (max-width: 768px) {

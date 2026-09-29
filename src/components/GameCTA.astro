@@ -3,7 +3,7 @@
 
 <div class="game-inner reveal">
   <div class="game-text">
-    <p class="game-desc">I made a totally fair game of Tic-Tac-Toe. No cheating. Definitely no cheating. If you win, you don't have to hire me.</p>
+    <p class="game-desc">I made a totally fair game of tic-tac-toe. No cheating. Definitely no cheating. If you win, you don't have to hire me.</p>
     <p class="game-disclaimer">(You won't win.)</p>
   </div>
   <iframe
@@ -14,6 +14,17 @@
     loading="lazy"
   ></iframe>
 </div>
+
+<script>
+  // The game posts its content height whenever it changes (for example when
+  // the board grows a fourth row), so the iframe never cuts off its ending.
+  const frame = document.querySelector<HTMLIFrameElement>('.game-iframe');
+  window.addEventListener('message', (e) => {
+    if (!frame || e.origin !== location.origin || e.source !== frame.contentWindow) return;
+    if (e.data?.type !== 'ttt-height' || typeof e.data.height !== 'number') return;
+    frame.style.height = `${Math.ceil(e.data.height)}px`;
+  });
+</script>
 
 <style>
   .game-inner {
@@ -40,8 +51,10 @@
   }
 
   .game-iframe {
+    display: block;
     width: 100%;
     height: 600px;
+    transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     border: none;
     border-radius: 12px;
     background: transparent;
@@ -49,7 +62,6 @@
 
   @media (max-width: 768px) {
     .game-text {
-      text-align: center;
       max-width: none;
     }
 

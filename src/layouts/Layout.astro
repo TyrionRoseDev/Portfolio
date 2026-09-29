@@ -1,28 +1,64 @@
 ---
 import Nav from '../components/Nav.astro';
+import '../styles/global.css';
 import '../styles/fonts.css';
 import playfairLatin from '../assets/fonts/playfair-display-latin.woff2?url';
 import interLatin from '../assets/fonts/inter-latin.woff2?url';
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+import defaultOgImage from '../assets/og-default.png';
 
 interface Props {
   title?: string;
   description?: string;
+  // Shown when the page is shared on LinkedIn, Slack, iMessage and so on.
+  image?: ImageMetadata;
+  imageAlt?: string;
+  // Keeps pages like the 404 out of search results.
+  noindex?: boolean;
 }
 
 const {
-  title = 'Tyrion · Developer & Designer',
-  description = 'Developer and designer based in South Wales.'
+  title = 'Tyrion Meredith · Developer & Designer',
+  description = 'Tyrion Meredith is a developer and designer in South Wales who builds web apps, client websites and games from idea to launch. Open to freelance and full-time work.',
+  image = defaultOgImage,
+  imageAlt = 'The tyrion.uk home page',
+  noindex = false,
 } = Astro.props;
+
+// Internal links don't use trailing slashes, so canonical URLs don't either.
+const path = Astro.url.pathname.replace(/(.)\/$/, '$1');
+const canonical = new URL(path, Astro.site);
+const ogImage = await getImage({ src: image, width: 1200, height: 630, fit: 'cover', position: 'top', format: 'jpg', quality: 80 });
+const ogImageUrl = new URL(ogImage.src, Astro.site);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <title>{title}</title>
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Tyrion Meredith" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <slot name="head" />
+    <meta name="theme-color" content="#fdf8f5" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f0a0d" media="(prefers-color-scheme: dark)" />
 
     <!-- Fonts are self-hosted (see src/styles/fonts.css). Preload the two
          latin files the nav and hero need first. -->
@@ -37,25 +73,25 @@ const {
     </script>
   </head>
   <body>
+    <a href="#main" class="skip-link">Skip to content</a>
     <Nav />
     <slot />
 
     <!-- Smooth scroll only for same-page anchor clicks -->
     <script>
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       document.addEventListener('click', (e) => {
-        const link = e.target.closest('a[href*="#"]');
-        if (!link) return;
+        const link = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href*="#"]');
+        // The skip link keeps the browser's default jump, which also moves focus.
+        if (!link || link.classList.contains('skip-link')) return;
 
         const url = new URL(link.href, location.href);
-        // Only smooth-scroll if staying on the same page
-        if (url.pathname === location.pathname || url.pathname === '/' && location.pathname === '/') {
-          const target = document.querySelector(url.hash);
-          if (target) {
-            e.preventDefault();
-            history.pushState(null, '', url.hash);
-            target.scrollIntoView({ behavior: 'smooth' });
-          }
-        }
+        if (url.pathname !== location.pathname || !url.hash) return;
+        const target = document.querySelector(url.hash);
+        if (!target) return;
+        e.preventDefault();
+        history.pushState(null, '', url.hash);
+        target.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth' });
       });
     </script>
 
@@ -66,6 +102,7 @@ const {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
             }
           });
         },
@@ -75,7 +112,3 @@ const {
     </script>
   </body>
 </html>
-
-<style>
-  @import '../styles/global.css';
-</style>

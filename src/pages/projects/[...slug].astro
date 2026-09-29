@@ -6,20 +6,20 @@ import { Picture } from 'astro:assets';
 import fallbackImage from '../../assets/projects/popcorn-screenshot.png';
 
 export async function getStaticPaths() {
-  const projects = await getCollection('projects');
-  return projects.map((project) => ({
+  const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+  return projects.map((project, i) => ({
     params: { slug: project.id },
-    props: { project },
+    props: { project, next: projects[(i + 1) % projects.length] },
   }));
 }
 
-const { project } = Astro.props;
+const { project, next } = Astro.props;
 const { Content } = await render(project);
-const { title, description, longDescription, label, year, tech, image, video, liveUrl, githubUrl } = project.data;
+const { title, description, longDescription, label, year, tech, image, video, poster, gallery, status, liveUrl, githubUrl } = project.data;
 ---
 
-<Layout title={`${title} · Tyrion`} description={description}>
-  <main class="pd">
+<Layout title={`${title} · Tyrion Meredith`} description={description} image={image} imageAlt={`Screenshot of ${title}`}>
+  <main id="main" tabindex="-1" class="pd">
     <div class="pd-back">
       <a href="/projects">
         <span class="pd-back-arrow"></span>
@@ -28,18 +28,21 @@ const { title, description, longDescription, label, year, tech, image, video, li
     </div>
 
     <div class="pd-hero">
-      <div class="pd-label">{label} · {year}</div>
+      <div class="pd-label">
+        {label} · {year}
+        {status === 'in-progress' && <span class="pd-status">In progress</span>}
+      </div>
       <h1 class="pd-title">{title}</h1>
       <p class="pd-subtitle">{longDescription}</p>
     </div>
 
     <div class="pd-cover">
       {video ? (
-        <video src={video} autoplay loop muted playsinline class="pd-cover-inner" />
+        <video src={video} poster={poster} autoplay loop muted playsinline controls preload="metadata" class="pd-cover-inner" aria-label={`Demo of ${title}`} />
       ) : (
         <Picture
           src={image ?? fallbackImage}
-          alt={title}
+          alt={`Screenshot of ${title}`}
           class="pd-cover-inner"
           formats={['avif', 'webp']}
           quality={80}
@@ -54,8 +57,35 @@ const { title, description, longDescription, label, year, tech, image, video, li
     <div class="pd-content">
       <Content />
 
+      {gallery.length > 0 && (
+        <div class="pd-section">
+          <div class="pd-section-num">GALLERY</div>
+          <h3>A closer look</h3>
+          <div class="pd-gallery">
+            {gallery.map((shot) => (
+              <button
+                type="button"
+                class:list={['pd-shot', { portrait: shot.src.height > shot.src.width }]}
+                aria-label={`Enlarge: ${shot.alt}`}
+              >
+                <Picture
+                  src={shot.src}
+                  alt={shot.alt}
+                  formats={['avif', 'webp']}
+                  quality={80}
+                  widths={[400, 800, 1200, 1800]}
+                  sizes="(max-width: 768px) 100vw, 1200px"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div class="pd-section">
-        <div class="pd-section-num">03 · TECH STACK</div>
+        <div class="pd-section-num">TECH STACK</div>
         <h3>Built with</h3>
         <div class="pd-tags">
           {tech.map((t) => <span class="pd-tag">{t}</span>)}
@@ -63,13 +93,77 @@ const { title, description, longDescription, label, year, tech, image, video, li
       </div>
 
       <div class="pd-links">
-        {liveUrl && <a href={liveUrl} class="pd-link pd-link-fill" target="_blank" rel="noopener">Live Site ↗</a>}
+        {liveUrl && <a href={liveUrl} class="pd-link pd-link-fill" target="_blank" rel="noopener">Live site ↗</a>}
         {githubUrl && <a href={githubUrl} class="pd-link pd-link-ghost" target="_blank" rel="noopener">GitHub ↗</a>}
       </div>
     </div>
+
+    <a href={`/projects/${next.id}`} class="pd-next">
+      <span class="pd-next-label">Next project</span>
+      <span class="pd-next-title">{next.data.title} <span class="pd-next-arr">→</span></span>
+    </a>
   </main>
   <Footer />
+
+  <dialog class="pd-lightbox" aria-label="Enlarged screenshot" data-single={gallery.length < 2 ? '' : undefined}>
+    <div class="pd-lightbox-img"></div>
+    <button type="button" class="pd-lb-btn pd-lb-close" aria-label="Close">Close ✕</button>
+    <button type="button" class="pd-lb-btn pd-lb-prev" aria-label="Previous screenshot">←</button>
+    <button type="button" class="pd-lb-btn pd-lb-next" aria-label="Next screenshot">→</button>
+    <div class="pd-lb-count" aria-live="polite"></div>
+  </dialog>
 </Layout>
+
+<script>
+  // Clicking a gallery shot opens it full size, with previous/next buttons,
+  // arrow keys and swipe. The <picture> is cloned so the browser reuses the
+  // sources it already has.
+  const dialog = document.querySelector<HTMLDialogElement>('.pd-lightbox');
+  const slot = dialog?.querySelector('.pd-lightbox-img');
+  const count = dialog?.querySelector('.pd-lb-count');
+  const shots = [...document.querySelectorAll<HTMLButtonElement>('.pd-shot')];
+  let current = 0;
+
+  function show(index: number) {
+    if (!slot || !count) return;
+    current = (index + shots.length) % shots.length;
+    const picture = shots[current].querySelector('picture');
+    if (!picture) return;
+    const clone = picture.cloneNode(true) as HTMLElement;
+    const img = clone.querySelector('img');
+    img?.setAttribute('sizes', '100vw');
+    img?.setAttribute('loading', 'eager');
+    slot.replaceChildren(clone);
+    count.textContent = `${current + 1} / ${shots.length}`;
+  }
+
+  shots.forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      show(i);
+      dialog?.showModal();
+    });
+  });
+  dialog?.querySelector('.pd-lb-close')?.addEventListener('click', () => dialog.close());
+  dialog?.querySelector('.pd-lb-prev')?.addEventListener('click', () => show(current - 1));
+  dialog?.querySelector('.pd-lb-next')?.addEventListener('click', () => show(current + 1));
+  dialog?.addEventListener('keydown', (e) => {
+    if (shots.length < 2) return;
+    if (e.key === 'ArrowLeft') show(current - 1);
+    if (e.key === 'ArrowRight') show(current + 1);
+  });
+  // Clicking the backdrop (anywhere that isn't the image or a button) closes it.
+  dialog?.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (!target.closest('img, button')) dialog.close();
+  });
+  // Swipe left/right on touch screens.
+  let startX = 0;
+  dialog?.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+  dialog?.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (shots.length > 1 && Math.abs(dx) > 50) show(current + (dx < 0 ? 1 : -1));
+  });
+</script>
 
 <style>
   .pd { max-width: 1100px; margin: 0 auto; }
@@ -77,7 +171,7 @@ const { title, description, longDescription, label, year, tech, image, video, li
   .pd-back a {
     font-size: 12px; text-transform: uppercase; letter-spacing: 3px;
     color: var(--fg-muted); text-decoration: none; font-weight: 500;
-    display: flex; align-items: center; gap: 12px; transition: color 0.3s;
+    display: inline-flex; align-items: center; gap: 12px; transition: color 0.3s;
   }
   .pd-back a:hover { color: var(--accent); }
   .pd-back-arrow {
@@ -102,6 +196,15 @@ const { title, description, longDescription, label, year, tech, image, video, li
   .pd-label::after {
     content: ''; width: 32px; height: 1px;
     background: linear-gradient(90deg, var(--accent-light), transparent);
+  }
+  .pd-status {
+    font-size: 10px; letter-spacing: 2px; padding: 4px 10px;
+    border: 1px solid var(--accent-light); border-radius: 100px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .pd-status::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); animation: pulse-dot 2s ease-in-out infinite;
   }
   .pd-title {
     font-family: var(--font-serif);
@@ -142,6 +245,18 @@ const { title, description, longDescription, label, year, tech, image, video, li
     font-size: 16px; color: var(--fg-light);
     line-height: 1.85; font-weight: 350; margin-bottom: 16px;
   }
+  .pd-content :global(ul) {
+    list-style: none; margin: 0 0 16px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .pd-content :global(li) {
+    position: relative; padding-left: 22px;
+    font-size: 16px; color: var(--fg-light); line-height: 1.75; font-weight: 350;
+  }
+  .pd-content :global(li)::before {
+    content: ''; position: absolute; left: 2px; top: 0.7em;
+    width: 6px; height: 6px; border-radius: 50%; background: var(--accent-light);
+  }
+  .pd-content :global(strong) { color: var(--fg); font-weight: 600; }
 
   .pd-section { margin-top: 56px; }
   .pd-section-num {
@@ -161,13 +276,67 @@ const { title, description, longDescription, label, year, tech, image, video, li
     border-radius: 100px; color: var(--fg-light);
     text-transform: uppercase; letter-spacing: 1px;
   }
+  .pd-gallery {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 8px;
+  }
+  .pd-shot {
+    position: relative; padding: 24px; border: 1px solid var(--border); border-radius: 16px;
+    overflow: hidden; cursor: zoom-in; aspect-ratio: 4 / 3;
+    background: linear-gradient(160deg, var(--accent-pale), color-mix(in srgb, var(--accent-pale) 60%, var(--bg)));
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
+  }
+  .pd-shot:first-child { grid-column: 1 / -1; aspect-ratio: 16 / 10; padding: 32px; }
+  .pd-shot.portrait { aspect-ratio: 3 / 4; padding: 20px; }
+  .pd-shot:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 48px color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+  .pd-shot :global(picture) { display: contents; }
+  .pd-shot :global(img) {
+    max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;
+    border-radius: 8px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .pd-shot:hover :global(img) { transform: scale(1.03); }
+
+  .pd-lightbox {
+    margin: auto; padding: 0; border: none; background: transparent;
+    max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; overflow: hidden;
+  }
+  .pd-lightbox[open] { display: flex; align-items: center; justify-content: center; }
+  .pd-lightbox::backdrop { background: rgba(15, 10, 13, 0.88); backdrop-filter: blur(6px); }
+  .pd-lightbox[open] .pd-lightbox-img { animation: fade-in 0.3s ease; }
+  .pd-lightbox-img :global(picture) { display: contents; }
+  .pd-lightbox-img :global(img) {
+    display: block; max-width: calc(100vw - 160px); max-height: calc(100vh - 120px); width: auto; height: auto;
+    border-radius: 12px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+  }
+  .pd-lb-btn {
+    position: absolute; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff; font: inherit; cursor: pointer; border-radius: 100px;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .pd-lb-btn:hover { background: rgba(255, 255, 255, 0.16); border-color: rgba(255, 255, 255, 0.4); }
+  .pd-lb-close { top: 24px; right: 24px; padding: 10px 18px; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; }
+  .pd-lb-prev, .pd-lb-next { top: 50%; width: 52px; height: 52px; margin-top: -26px; font-size: 20px; }
+  .pd-lb-prev { left: 24px; }
+  .pd-lb-next { right: 24px; }
+  .pd-lb-count {
+    position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.7); font-family: var(--font-mono); font-size: 12px; letter-spacing: 2px;
+  }
+  .pd-lightbox[data-single] .pd-lb-prev,
+  .pd-lightbox[data-single] .pd-lb-next,
+  .pd-lightbox[data-single] .pd-lb-count { display: none; }
+
   .pd-links { display: flex; gap: 16px; margin-top: 40px; }
   .pd-link {
     padding: 14px 32px; border-radius: 100px;
     font-size: 12px; font-weight: 600; text-decoration: none;
     text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s;
   }
-  .pd-link-fill { background: var(--accent); color: #fff; }
+  .pd-link-fill { background: var(--accent); color: var(--on-accent); }
   .pd-link-fill:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 30%, transparent);
@@ -175,10 +344,38 @@ const { title, description, longDescription, label, year, tech, image, video, li
   .pd-link-ghost { border: 1.5px solid var(--border); color: var(--fg-light); }
   .pd-link-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
+  .pd-next {
+    display: block; margin: 0 56px 80px; padding: 56px 0 0;
+    border-top: 1px solid var(--border);
+    text-decoration: none; color: var(--fg);
+  }
+  .pd-next-label {
+    display: block; font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--accent); font-weight: 500; margin-bottom: 12px;
+  }
+  .pd-next-title {
+    font-family: var(--font-serif); font-size: 56px; font-weight: 900;
+    letter-spacing: -2px; line-height: 1; transition: color 0.3s;
+  }
+  .pd-next-arr { display: inline-block; color: var(--accent); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .pd-next:hover .pd-next-title { color: var(--accent); }
+  .pd-next:hover .pd-next-arr { transform: translateX(12px); }
+
   @media (max-width: 768px) {
+    .pd-next { margin: 0 24px 48px; padding-top: 40px; }
+    .pd-next-title { font-size: 32px; letter-spacing: -1px; }
     .pd-back { padding: 80px 24px 24px; }
     .pd-hero { padding: 0 24px 40px; }
     .pd-title { font-size: 40px; letter-spacing: -1.5px; }
     .pd-cover { margin: 0 24px 48px; height: 280px; }
+    .pd-gallery { grid-template-columns: 1fr; }
+    .pd-shot, .pd-shot:first-child { padding: 18px; }
+    .pd-shot.portrait { aspect-ratio: 4 / 5; }
+    .pd-lightbox-img :global(img) { max-width: calc(100vw - 32px); max-height: calc(100vh - 160px); }
+    .pd-lb-prev, .pd-lb-next { top: auto; bottom: 16px; margin-top: 0; width: 44px; height: 44px; }
+    .pd-lb-prev { left: 16px; }
+    .pd-lb-next { right: 16px; }
+    .pd-lb-close { top: 16px; right: 16px; }
+    .pd-lb-count { bottom: 30px; }
   }
 </style>

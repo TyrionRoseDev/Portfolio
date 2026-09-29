@@ -2,13 +2,14 @@
 import Layout from '../layouts/Layout.astro';
 import Footer from '../components/Footer.astro';
 import { getCollection } from 'astro:content';
+import { Picture } from 'astro:assets';
 
 const certificates = (await getCollection('certificates'))
   .sort((a, b) => a.data.order - b.data.order);
 ---
 
-<Layout title="Certificates · Tyrion" description="Professional certifications and course completions.">
-  <main class="ct">
+<Layout title="Certificates · Tyrion Meredith" description="Certificates Tyrion Meredith has earned in web development and agentic AI workflows, each with a link to verify it.">
+  <main id="main" tabindex="-1" class="ct">
     <div class="ct-hero">
       <div class="ct-hero-left">
         <div class="ct-hero-label">Credentials</div>
@@ -29,7 +30,16 @@ const certificates = (await getCollection('certificates'))
           {cert.data.image && (
             <div class="ct-img-frame">
               <div class="ct-img-inner">
-                <img src={cert.data.image} alt={`${cert.data.title} certificate`} loading="lazy" />
+                <Picture
+                  src={cert.data.image}
+                  alt={`${cert.data.title} certificate from ${cert.data.issuer}, awarded to Tyrion Meredith`}
+                  formats={['avif', 'webp']}
+                  quality={80}
+                  widths={[480, 800, 1200]}
+                  sizes="(max-width: 768px) 90vw, 700px"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div class="ct-shine"></div>
               </div>
             </div>
@@ -38,7 +48,7 @@ const certificates = (await getCollection('certificates'))
           <div class="ct-details">
             <div class="ct-info">
               <div class="ct-issuer">{cert.data.issuer}</div>
-              <div class="ct-name">{cert.data.title}</div>
+              <h2 class="ct-name">{cert.data.title}</h2>
               <div class="ct-meta">
                 <span>{cert.data.date}</span>
                 <span class="ct-meta-sep">/</span>
@@ -53,7 +63,7 @@ const certificates = (await getCollection('certificates'))
                   ))}
                 </div>
               )}
-              <a href={cert.data.credentialUrl} target="_blank" rel="noopener noreferrer" class="ct-verify-btn">
+              <a href={cert.data.credentialUrl} target="_blank" rel="noopener noreferrer" class="ct-verify-btn" aria-label={`Verify the ${cert.data.title} certificate on ${cert.data.issuer} (opens in a new tab)`}>
                 Verify
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M7 17 17 7" /><path d="M7 7h10v10" />
@@ -154,7 +164,7 @@ const certificates = (await getCollection('certificates'))
   }
   .ct-card:hover .ct-verified {
     background: var(--accent);
-    color: #fff;
+    color: var(--on-accent);
     border-color: var(--accent);
     transform: scale(1.1) rotate(8deg);
   }
@@ -178,6 +188,7 @@ const certificates = (await getCollection('certificates'))
   .ct-card:hover .ct-img-inner {
     transform: perspective(800px) rotateX(0deg);
   }
+  .ct-img-inner picture { display: contents; }
   .ct-img-inner img {
     width: 100%;
     display: block;
@@ -281,7 +292,7 @@ const certificates = (await getCollection('certificates'))
   .ct-verify-btn {
     padding: 12px 28px;
     background: var(--accent);
-    color: #fff;
+    color: var(--on-accent);
     border-radius: 100px;
     font-size: 11px;
     font-weight: 600;
