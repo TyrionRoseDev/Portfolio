@@ -1,18 +1,22 @@
 ---
 title: "Photographer Portfolio"
 description: "A portfolio site for a photographer, with swipeable slideshows, a shuffling polaroid wall, and a CMS the photographer runs on their own."
-longDescription: "Client work: a portfolio site for a photographer who wanted something minimal that lets the photos do the talking, and that they could keep up to date themselves without calling me. The screenshots here use placeholder images to keep the client's work and name private."
+longDescription: "Client work: a portfolio site for a photographer who wanted something minimal that lets the photos do the talking, and that they could keep up to date themselves without calling me. The screenshots here use stock photos in place of the client's own, to keep their work and name private."
 label: "Client Website"
 year: 2026
 tech: ["Astro", "React", "TypeScript", "Framer Motion", "Sanity CMS", "Cloudflare Workers", "Resend"]
 featured: true
-image: "../../assets/projects/photographer-home.png"
+image: "../../assets/projects/photographer-cover.jpg"
 gallery:
-  - src: "../../assets/projects/photographer-slideshow.png"
-    alt: "A shoot page with its slideshow and previous and next controls"
-  - src: "../../assets/projects/photographer-mobile.png"
+  - src: "../../assets/projects/photographer-hover.jpg"
+    alt: "Hovering a shoot on the home page fills the screen with its cover photo"
+  - src: "../../assets/projects/photographer-polaroids.jpg"
+    alt: "The polaroid wall on the home page, which swaps photos in and out"
+  - src: "../../assets/projects/photographer-slideshow.jpg"
+    alt: "A shoot's slideshow, with previous and next controls and a photo counter"
+  - src: "../../assets/projects/photographer-mobile.jpg"
     alt: "The slideshow on a phone"
-order: 2
+order: 4
 ---
 
 ## The brief

@@ -9,7 +9,7 @@ featured: true
 image: "../../assets/projects/fossilfinder-screenshot.png"
 liveUrl: "https://fossil-finder.tyrion.uk/"
 githubUrl: "https://github.com/TyrionRoseDev/Fossil-finder"
-order: 4
+order: 5
 ---
 
 ## The problem

@@ -16,6 +16,12 @@ export async function getStaticPaths() {
 const { project, next } = Astro.props;
 const { Content } = await render(project);
 const { title, description, longDescription, label, year, tech, image, video, poster, gallery, status, liveUrl, githubUrl } = project.data;
+
+// Gallery: the first shot spans the row, the rest sit in pairs. If either shot
+// in a pair is portrait, both tiles go tall so the pair lines up.
+const isPortrait = (i: number) => !!gallery[i] && gallery[i].src.height > gallery[i].src.width;
+const partner = (i: number) => (i % 2 === 1 ? i + 1 : i - 1);
+const pairHasPortrait = (i: number) => i > 0 && partner(i) < gallery.length && (isPortrait(i) || isPortrait(partner(i)));
 ---
 
 <Layout title={`${title} · Tyrion Meredith`} description={description} image={image} imageAlt={`Screenshot of ${title}`}>
@@ -62,10 +68,10 @@ const { title, description, longDescription, label, year, tech, image, video, po
           <div class="pd-section-num">GALLERY</div>
           <h3>A closer look</h3>
           <div class="pd-gallery">
-            {gallery.map((shot) => (
+            {gallery.map((shot, i) => (
               <button
                 type="button"
-                class:list={['pd-shot', { portrait: shot.src.height > shot.src.width }]}
+                class:list={['pd-shot', { tall: pairHasPortrait(i) }]}
                 aria-label={`Enlarge: ${shot.alt}`}
               >
                 <Picture
@@ -287,7 +293,9 @@ const { title, description, longDescription, label, year, tech, image, video, po
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
   }
   .pd-shot:first-child { grid-column: 1 / -1; aspect-ratio: 16 / 10; padding: 32px; }
-  .pd-shot.portrait { aspect-ratio: 3 / 4; padding: 20px; }
+  .pd-shot.tall { aspect-ratio: 4 / 5; padding: 20px; }
+  /* The first shot spans the row; if that leaves the last one on its own, it spans too. */
+  .pd-shot:nth-child(even):last-child { grid-column: 1 / -1; aspect-ratio: 16 / 10; padding: 32px; }
   .pd-shot:hover {
     transform: translateY(-4px);
     box-shadow: 0 20px 48px color-mix(in srgb, var(--accent) 12%, transparent);
@@ -370,7 +378,7 @@ const { title, description, longDescription, label, year, tech, image, video, po
     .pd-cover { margin: 0 24px 48px; height: 280px; }
     .pd-gallery { grid-template-columns: 1fr; }
     .pd-shot, .pd-shot:first-child { padding: 18px; }
-    .pd-shot.portrait { aspect-ratio: 4 / 5; }
+    .pd-shot.tall { aspect-ratio: 4 / 5; }
     .pd-lightbox-img :global(img) { max-width: calc(100vw - 32px); max-height: calc(100vh - 160px); }
     .pd-lb-prev, .pd-lb-next { top: auto; bottom: 16px; margin-top: 0; width: 44px; height: 44px; }
     .pd-lb-prev { left: 16px; }

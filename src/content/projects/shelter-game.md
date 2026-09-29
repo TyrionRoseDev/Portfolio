@@ -17,7 +17,7 @@ gallery:
     alt: "The seaside shelter, built on a pier"
   - src: "../../assets/projects/shelter-visitors.png"
     alt: "Visitors queueing at the front desk to adopt"
-order: 3
+order: 2
 ---
 
 ## The idea
