@@ -4,22 +4,72 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tic-Tac-Toe: Totally Fair Edition</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
+    /* ── Self-hosted fonts (latin subsets, OFL) ────────────────── */
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+      src: url('/fonts/inter-latin.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Caveat';
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url('/fonts/caveat-latin.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Crimson Text';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('/fonts/crimson-text-400-latin.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Crimson Text';
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: url('/fonts/crimson-text-600-latin.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Crimson Text';
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: url('/fonts/crimson-text-700-latin.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Crimson Text';
+      font-style: italic;
+      font-weight: 400;
+      font-display: swap;
+      src: url('/fonts/crimson-text-400-italic-latin.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Crimson Text';
+      font-style: italic;
+      font-weight: 600;
+      font-display: swap;
+      src: url('/fonts/crimson-text-600-italic-latin.woff2') format('woff2');
+    }
+
     /* ── Theme Variables ───────────────────────────────────────── */
     :root,
     [data-theme="dark"] {
       --bg:           #0f0a0d;
       --fg:           #f5eff0;
       --fg-body:      #d8ccd0;
-      --fg-light:     #9a8a92;
-      --fg-muted:     #5a4a52;
+      --fg-light:     #b3a4ab;
+      --fg-muted:     #8c7b84;
+      --fg-subtle:    #9a8a92; /* small control text, 5.63:1 on --surface */
       --accent:       #d88aa5;
       --accent-mid:   #c2577a;
       --accent-light: #8a4a62;
       --accent-pale:  #3a2030;
+      --on-accent:    #0f0a0d; /* text on accent-filled buttons, 7.57:1 */
       --surface:      #1a1216;
       --border:       #2a1e24;
     }
@@ -28,14 +78,28 @@
       --bg:           #fdf8f5;
       --fg:           #1a1118;
       --fg-body:      #3d2d35;
-      --fg-light:     #8a7a82;
-      --fg-muted:     #b8a8b0;
-      --accent:       #c2577a;
+      --fg-light:     #6f5f67;
+      --fg-muted:     #7d6c75;
+      --fg-subtle:    #75656d; /* small control text, 5.47:1 on --surface */
+      --accent:       #b24c6e;
       --accent-mid:   #d88aa5;
       --accent-light: #e8b4c8;
       --accent-pale:  #f5dce6;
+      --on-accent:    #fff;    /* text on accent-filled buttons, 5.06:1 */
       --surface:      #fff;
       --border:       #ede2e6;
+    }
+
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     /* ── Reset ─────────────────────────────────────────────────── */
@@ -118,8 +182,9 @@
     /* ── Board Container ───────────────────────────────────────── */
     #boardContainer {
       position: relative;
-      width: clamp(260px, 70vw, 360px);
-      height: clamp(260px, 70vw, 360px);
+      /* Never wider than the viewport minus the body padding (1rem each side at <=400px) */
+      width: min(clamp(260px, 70vw, 360px), calc(100vw - 2rem));
+      height: min(clamp(260px, 70vw, 360px), calc(100vw - 2rem));
       margin: 0 auto;
       transition: transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
@@ -149,6 +214,15 @@
 
     .cell-overlay.taken {
       pointer-events: none;
+    }
+
+    .cell-overlay:focus {
+      outline: none;
+    }
+
+    .cell-overlay:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -4px;
     }
 
     /* ── Commentary ────────────────────────────────────────────── */
@@ -183,7 +257,7 @@
     }
 
     #boardContainer.expanded {
-      height: clamp(347px, 93vw, 480px);
+      height: min(clamp(347px, 93vw, 480px), calc((100vw - 2rem) * 4 / 3));
       transition: height 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
@@ -204,12 +278,21 @@
       z-index: 1000;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s;
+      /* visibility keeps the hidden modal's controls out of the tab order */
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0s linear 0.3s;
     }
 
     #modalOverlay.visible {
       opacity: 1;
       pointer-events: auto;
+      visibility: visible;
+      transition: opacity 0.3s, visibility 0s;
+    }
+
+    #modal:focus,
+    #modal h2:focus {
+      outline: none;
     }
 
     /* ── Modal (Contract) ──────────────────────────────────────── */
@@ -483,22 +566,22 @@
     .btn-replay {
       background: none;
       border: none;
-      color: #9a8a7a;
-      font-size: 0.6rem;
+      color: #6b5b4c; /* 6.00:1 on the paper */
+      font-size: 0.75rem;
       font-family: 'Crimson Text', serif;
       cursor: pointer;
       transition: color 0.2s;
     }
 
     .btn-replay:hover {
-      color: #5a4a3a;
+      color: #3d2a1a;
     }
 
     .btn-decline {
       background: none;
       border: none;
-      color: #c4b4a4;
-      font-size: 0.45rem;
+      color: #76665a; /* 5.07:1 on the paper */
+      font-size: 0.6875rem;
       font-family: 'Crimson Text', serif;
       cursor: pointer;
       transition: transform 0.15s, color 0.2s;
@@ -506,7 +589,36 @@
     }
 
     .btn-decline:hover {
-      color: #8a7a6a;
+      color: #5a4a3a;
+    }
+
+    /* Embedded "you lost" card (built in showContract) */
+    .btn-embed-sign {
+      display: inline-block;
+      padding: 14px 36px;
+      background: var(--accent);
+      color: var(--on-accent);
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.2s;
+    }
+
+    .btn-embed-sign:focus-visible,
+    .btn-embed-replay:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .btn-embed-replay {
+      background: none;
+      border: none;
+      color: var(--fg-subtle);
+      font-size: 0.75rem;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 1rem;
     }
 
     .btn-decline.dodging {
@@ -600,21 +712,22 @@
   </div>
 
   <!-- Commentary -->
-  <p id="commentary">Your move!</p>
+  <p id="commentary" aria-live="polite">Your move!</p>
 
-  <a href="https://tyrion.uk" class="back-link">&larr; Back to portfolio</a>
+  <a href="/#game" class="back-link">&larr; Back to portfolio</a>
 
   <!-- Modal Overlay -->
   <div id="modalOverlay">
-    <div id="modal">
+    <div id="modal" role="dialog" aria-modal="true" aria-labelledby="contractTitle">
       <div class="official-stamp">OFFICIAL</div>
 
-      <h2>Binding Job Offer Agreement</h2>
+      <h2 id="contractTitle" tabindex="-1">Binding Job Offer Agreement</h2>
 
       <p class="admission" id="admission"></p>
 
       <ul class="terms" id="terms"></ul>
 
+      <label for="nameField" class="visually-hidden">Your full name</label>
       <input
         class="name-field"
         id="nameField"
@@ -840,23 +953,47 @@
       });
     }
 
+    // Builds the 9 clickable/focusable cells once, then just re-lays them out
+    // (on resize/reset) so their taken state and keyboard focus survive.
     function createCellOverlays() {
-      document.querySelectorAll('.cell-overlay').forEach(el => el.remove());
-
       const cellSize = boardContainer.clientWidth / 3;
       for (let i = 0; i < 9; i++) {
         const row = Math.floor(i / 3);
         const col = i % 3;
-        const div = document.createElement('div');
-        div.classList.add('cell-overlay');
-        div.dataset.index = i;
+        let div = boardContainer.querySelector(`.cell-overlay[data-index="${i}"]`);
+        if (!div) {
+          div = document.createElement('div');
+          div.classList.add('cell-overlay');
+          div.dataset.index = i;
+          div.setAttribute('role', 'button');
+          div.setAttribute('tabindex', '0');
+          div.addEventListener('click', () => handleCellClick(i));
+          div.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleCellClick(i);
+            }
+          });
+          boardContainer.appendChild(div);
+        }
         div.style.left = `${col * cellSize}px`;
         div.style.top = `${row * cellSize}px`;
         div.style.width = `${cellSize}px`;
         div.style.height = `${cellSize}px`;
-        div.addEventListener('click', () => handleCellClick(i));
-        boardContainer.appendChild(div);
+        syncCell(i);
       }
+    }
+
+    // Mirror state.board[index] onto the cell's .taken class and accessible name.
+    function syncCell(index) {
+      const overlay = boardContainer.querySelector(`.cell-overlay[data-index="${index}"]`);
+      if (!overlay) return;
+      const mark = state.board[index];
+      const label = `Row ${Math.floor(index / 3) + 1}, column ${(index % 3) + 1}`;
+      overlay.classList.toggle('taken', mark !== EMPTY);
+      overlay.setAttribute('aria-label', mark !== EMPTY ? `${label}, ${mark}` : label);
+      if (mark !== EMPTY) overlay.setAttribute('aria-disabled', 'true');
+      else overlay.removeAttribute('aria-disabled');
     }
 
     // ── Pencil Animation Helpers ──
@@ -1036,14 +1173,15 @@
       }, 600);
     }
 
+    // Both read the current state.board value, so set the board first.
     function markCellTaken(index) {
-      const overlay = boardContainer.querySelector(`.cell-overlay[data-index="${index}"]`);
-      if (overlay) overlay.classList.add('taken');
+      syncCell(index);
+      notifyHeight();
     }
 
     function unmarkCellTaken(index) {
-      const overlay = boardContainer.querySelector(`.cell-overlay[data-index="${index}"]`);
-      if (overlay) overlay.classList.remove('taken');
+      syncCell(index);
+      notifyHeight();
     }
 
     async function aiTurn() {
@@ -1181,7 +1319,7 @@
       state.board = newBoard;
 
       boardSvg.querySelectorAll('.mark-x, .mark-o').forEach(el => el.remove());
-      document.querySelectorAll('.cell-overlay').forEach(el => el.classList.remove('taken'));
+      for (let i = 0; i < 9; i++) syncCell(i);
 
       for (let i = 0; i < 9; i++) {
         if (state.board[i] === PLAYER) {
@@ -1229,12 +1367,13 @@
       state.gameOver = true;
       state.locked = true;
 
-      setCommentary("Oh wait, I just remembered — this is actually a 4×3 board.");
+      setCommentary("Oh wait, I just remembered. This is actually a 4×3 board.");
       await delay(1500);
 
       // Expand the SVG viewBox to add a 4th row
       boardSvg.setAttribute('viewBox', '0 0 360 480');
       boardContainer.classList.add('expanded');
+      notifyHeight();
 
       await delay(900);
 
@@ -1440,11 +1579,81 @@
     const btnSign = document.getElementById('btnSign');
     const btnReplay = document.getElementById('btnReplay');
 
+    // ── Modal focus management ──
+    let modalReturnFocus = null;
+    let modalEscapeAction = null;
+
+    function getModalFocusables() {
+      const modal = modalOverlay.querySelector('#modal');
+      if (!modal) return [];
+      return [...modal.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+        .filter(el => el.getClientRects().length > 0);
+    }
+
+    function openModal(initialFocus, escapeAction) {
+      const active = document.activeElement;
+      modalReturnFocus = active && active !== document.body && !modalOverlay.contains(active) ? active : null;
+      modalEscapeAction = escapeAction;
+      modalOverlay.classList.add('visible');
+      if (initialFocus) initialFocus.focus({ preventScroll: true });
+    }
+
+    function isModalOpen() {
+      return modalOverlay.classList.contains('visible');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (!isModalOpen()) return;
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        if (modalEscapeAction) modalEscapeAction();
+        return;
+      }
+
+      if (e.key !== 'Tab') return;
+      const focusables = getModalFocusables();
+      if (!focusables.length) { e.preventDefault(); return; }
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const idx = focusables.indexOf(document.activeElement);
+
+      if (e.shiftKey && (idx <= 0)) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && (idx === -1 ? !modalOverlay.contains(document.activeElement) : idx === focusables.length - 1)) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+
+    // If focus lands outside the open modal (e.g. a click on the backdrop), pull it back in.
+    document.addEventListener('focusin', (e) => {
+      if (!isModalOpen() || modalOverlay.contains(e.target)) return;
+      const focusables = getModalFocusables();
+      if (focusables.length) focusables[0].focus();
+    });
+
+    function restoreModalFocus() {
+      const target = modalReturnFocus;
+      modalReturnFocus = null;
+      modalEscapeAction = null;
+      if (target && target.isConnected) target.focus({ preventScroll: true });
+    }
+
+    // Shared close path for "Play Again" (embedded) / "Decline" (full contract).
+    function replayFromEmbeddedCard() {
+      modalOverlay.classList.remove('visible');
+      state.round++;
+      resetGame();
+      restoreModalFocus();
+    }
+
     function showContract() {
-      // If embedded in iframe, open the full game page in a new tab for the contract
+      // If embedded in iframe, show a short card that links to the full contract page
       if (isEmbedded) {
         modalOverlay.innerHTML = `
-          <div id="modal" style="
+          <div id="modal" role="dialog" aria-modal="true" aria-labelledby="embedModalTitle" style="
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 1rem 1rem 0 0;
@@ -1453,31 +1662,18 @@
             text-align: center;
             transform: translateY(0);
           ">
-            <h2 style="font-family: 'Crimson Text', serif; font-variant: small-caps; font-size: 1.2rem; color: var(--fg); margin-bottom: 1rem;">You lost.</h2>
+            <h2 id="embedModalTitle" style="font-family: 'Crimson Text', serif; font-variant: small-caps; font-size: 1.2rem; color: var(--fg); margin-bottom: 1rem;">You lost.</h2>
             <p style="color: var(--fg-body); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem;">
               You are now legally obligated to offer me a job.<br>
               <span style="color: var(--fg-muted); font-size: 0.8rem; font-style: italic;">Sign the contract to make it official.</span>
             </p>
-            <a href="/game.html?contract=1&round=${state.round}" target="_top" style="
-              display: inline-block;
-              padding: 14px 36px;
-              background: var(--accent-mid);
-              color: #fff;
-              text-decoration: none;
-              border-radius: 8px;
-              font-weight: 600;
-              font-size: 0.95rem;
-              transition: background 0.2s;
-            ">Sign the Contract</a>
+            <a href="/game.html?contract=1&round=${state.round}" target="_top" class="btn-embed-sign">Sign the Contract</a>
             <br>
-            <button onclick="document.getElementById('modalOverlay').classList.remove('visible'); state.round++; resetGame();" style="
-              background: none; border: none; color: var(--fg-muted);
-              font-size: 0.6rem; font-family: inherit; cursor: pointer;
-              margin-top: 1rem;
-            ">Play Again (you'll lose)</button>
+            <button type="button" class="btn-embed-replay" id="btnEmbedReplay">Play Again (you'll lose)</button>
           </div>
         `;
-        modalOverlay.classList.add('visible');
+        modalOverlay.querySelector('#btnEmbedReplay').addEventListener('click', replayFromEmbeddedCard);
+        openModal(modalOverlay.querySelector('.btn-embed-sign'), replayFromEmbeddedCard);
         return;
       }
 
@@ -1497,7 +1693,9 @@
       btnDecline.textContent = declineTexts[0];
       btnDecline.style.transform = '';
       btnDecline.classList.remove('dodging');
-      modalOverlay.classList.add('visible');
+      // Focus the title (not the name field) so the admission/terms stay in view
+      // and touch devices don't pop the keyboard; Tab goes on to the name field.
+      openModal(document.getElementById('contractTitle'), declineContract);
     }
 
     function hideContract() {
@@ -1518,13 +1716,19 @@
 
       const subject = encodeURIComponent(`Job Offer (I lost at Tic-Tac-Toe${state.round > 1 ? ` - Round ${state.round}` : ''})`);
       const body = encodeURIComponent(`Hi Tyrion,\n\nI, ${name}, lost a totally fair game of Tic-Tac-Toe and am legally obligated to offer you a job.\n\nAgreed salary: ${data.salary}\n\nPlease start yesterday.\n\nRegards,\n${name}`);
-      window.open(`mailto:tyrionrose01@gmail.com?subject=${subject}&body=${body}`);
+      const mailto = `mailto:tyrionrose01@gmail.com?subject=${subject}&body=${body}`;
+      if (isEmbedded) {
+        try { window.top.location.href = mailto; } catch (e) { location.href = mailto; }
+      } else {
+        location.href = mailto;
+      }
     });
 
     btnReplay.addEventListener('click', () => {
       hideContract();
       state.round++;
       resetGame();
+      restoreModalFocus();
     });
 
     // ── Decline Button (dodges mouse) ──
@@ -1547,12 +1751,15 @@
       }
     });
 
-    btnDecline.addEventListener('click', () => {
+    function declineContract() {
       hideContract();
       setCommentary("Fine. I didn't want you to hire me anyway. 😤");
       state.round++;
       resetGame();
-    });
+      restoreModalFocus();
+    }
+
+    btnDecline.addEventListener('click', declineContract);
 
     // ── Signature Canvas ──
     const sigCanvas = document.getElementById('sigCanvas');
@@ -1682,7 +1889,7 @@
       return g;
     }
 
-    async function drawO(cellIndex, animate = true) {
+    async function drawO(cellIndex, animate = true, drawDuration = 2000) {
       const row = Math.floor(cellIndex / 3);
       const col = cellIndex % 3;
       const cx = col * 120 + 60;
@@ -1709,7 +1916,6 @@
 
       if (animate) {
         const len = path.getTotalLength();
-        const drawDuration = 2000;
         path.style.strokeDasharray = len;
         path.style.strokeDashoffset = len;
         path.style.animation = `pencilDraw ${drawDuration}ms ease-out forwards`;
@@ -1763,7 +1969,27 @@
       setTimeout(() => {
         commentaryEl.textContent = text;
         commentaryEl.style.opacity = 1;
+        notifyHeight();
       }, 200);
+    }
+
+    let resetCounter = 0;
+
+    // Draw the AI's head-start O's one after another (a single pencil), keeping
+    // the board locked until the last one is done.
+    async function prePlaceOs(cells, resetId) {
+      state.locked = true;
+      cells.forEach(i => {
+        state.board[i] = AI;
+        markCellTaken(i);
+      });
+      for (let n = 0; n < cells.length; n++) {
+        if (resetId !== resetCounter) return; // a newer reset took over
+        if (n > 0) await delay(200);
+        // Same pace as the expansion O's so round 3's five marks don't drag on
+        await drawO(cells[n], true, 800);
+      }
+      if (resetId === resetCounter) state.locked = false;
     }
 
     function resetGame() {
@@ -1780,23 +2006,14 @@
 
       drawGrid();
       createCellOverlays();
+      const resetId = ++resetCounter;
 
       if (state.round === 2) {
         setCommentary("I gave myself a tiny head start.");
-        const prePlaced = [0, 8];
-        prePlaced.forEach(i => {
-          state.board[i] = AI;
-          drawO(i, true);
-          markCellTaken(i);
-        });
+        prePlaceOs([0, 8], resetId);
       } else if (state.round === 3) {
         setCommentary("This is definitely fair.");
-        const prePlaced = [0, 2, 4, 6, 8];
-        prePlaced.forEach(i => {
-          state.board[i] = AI;
-          drawO(i, true);
-          markCellTaken(i);
-        });
+        prePlaceOs([0, 2, 4, 6, 8], resetId);
       } else if (state.round >= 4) {
         setCommentary("Speedrun.");
         state.locked = true;
@@ -1809,6 +2026,55 @@
 
       document.getElementById('roundNum').textContent = state.round;
       document.getElementById('winCount').textContent = '0';
+      notifyHeight();
+    }
+
+    // ── Embedded height reporting ──
+    // The parent iframe has a fixed height with scrolling="no", so tell it how
+    // tall the content really is. Measured from the in-flow children rather than
+    // the body/document box, because body's min-height: 100vh would otherwise
+    // echo the iframe's own height back and never let it shrink.
+    let lastPostedHeight = 0;
+    let heightFrame = 0;
+
+    function measureContentHeight() {
+      const body = document.body;
+      const bodyStyle = getComputedStyle(body);
+      let top = Infinity;
+      let bottom = -Infinity;
+      for (const el of body.children) {
+        if (el.tagName === 'SCRIPT') continue;
+        const s = getComputedStyle(el);
+        if (s.display === 'none' || s.position === 'fixed' || s.position === 'absolute') continue;
+        // offsetTop/offsetHeight ignore transforms, so the board flip doesn't count
+        top = Math.min(top, el.offsetTop - (parseFloat(s.marginTop) || 0));
+        bottom = Math.max(bottom, el.offsetTop + el.offsetHeight + (parseFloat(s.marginBottom) || 0));
+      }
+      if (top === Infinity) return document.documentElement.scrollHeight;
+      return Math.ceil(bottom - top + parseFloat(bodyStyle.paddingTop) + parseFloat(bodyStyle.paddingBottom));
+    }
+
+    function notifyHeight() {
+      if (!isEmbedded || heightFrame) return;
+      heightFrame = requestAnimationFrame(() => {
+        heightFrame = 0;
+        const height = measureContentHeight();
+        if (height === lastPostedHeight) return;
+        lastPostedHeight = height;
+        try {
+          parent.postMessage({ type: 'ttt-height', height }, location.origin);
+        } catch (e) {}
+      });
+    }
+
+    if (isEmbedded) {
+      if ('ResizeObserver' in window) {
+        const ro = new ResizeObserver(notifyHeight);
+        [document.documentElement, document.body, document.querySelector('header'), boardContainer, commentaryEl]
+          .forEach(el => el && ro.observe(el));
+      }
+      window.addEventListener('load', notifyHeight);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(notifyHeight);
     }
 
     // ── Init ──
